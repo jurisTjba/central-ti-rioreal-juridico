@@ -101,7 +101,7 @@
   dialog::backdrop { background: rgb(0 0 0 / .8); }
   dialog img { display: block; max-width: 96vw; max-height: 92vh; cursor: zoom-out; border-radius: 4px; }
 
-  /* atividades e administração */
+  /* atividades (pública) */
   .topo .nav-topo { display: flex; gap: 18px; align-items: baseline; flex-wrap: wrap; }
   .topo .nav-topo a { font: 600 .9rem system-ui, "Segoe UI", sans-serif; letter-spacing: 0; opacity: .85; }
   .topo .nav-topo a:hover { opacity: 1; text-decoration: underline; }
@@ -113,35 +113,93 @@
   .lista .quando { font-size: .88rem; color: var(--muted); white-space: nowrap; }
   .lista .titulo { font-weight: 600; }
   .lista .desc { grid-column: 2; margin: 0; color: var(--muted); font-size: .92rem; white-space: pre-line; max-width: 68ch; }
-  .lista .sis { grid-column: 2; font-size: .82rem; color: var(--muted); }
+  .lista .tags { grid-column: 2; }
   .lista .horas { font-variant-numeric: tabular-nums; font-size: .9rem; color: var(--muted); white-space: nowrap; text-align: right; }
   .lista .horas.rodando { color: var(--ok); font-weight: 600; }
-  .lista .ops { grid-column: 1 / -1; display: flex; gap: 8px; align-items: center; justify-content: flex-end; flex-wrap: wrap; margin-top: 6px; }
-  .cron { font: 700 1.05rem/1 ui-monospace, "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; margin-right: auto; }
-  .form { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; margin: 0 0 24px; display: grid; gap: 14px; }
-  .form > strong { font: 700 1.1rem var(--serif); }
+
+  /* badges */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .tag { display: inline-block; font-size: .74rem; font-weight: 600; letter-spacing: .02em; padding: 2px 9px; border-radius: 999px;
+         background: var(--bg); border: 1px solid var(--line); color: var(--muted); text-decoration: none; white-space: nowrap; }
+  .tag.link { color: var(--brand); border-color: color-mix(in srgb, var(--brand) 40%, transparent); }
+  .tag.link:hover { background: var(--brand); color: var(--btn-text); }
+  .tag.prazo { color: var(--restrito); border-color: color-mix(in srgb, var(--restrito) 45%, transparent); }
+
+  /* administração */
+  .sessao { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; font-size: .9rem; color: var(--muted); margin-bottom: 16px; }
+  .sessao .ops { display: flex; gap: 8px; }
+  .btn.mini { padding: 7px 13px; font-size: .85rem; font-weight: 600; border-width: 1px; line-height: 1.2; }
+  .btn.perigo { color: var(--erro); border-color: var(--erro); background: transparent; }
+  .btn.perigo-solido { background: var(--erro); border-color: var(--erro); color: #fff; }
+  .btn.grande { padding: 16px 34px; font-size: 1.1rem; min-width: 170px; }
+  .btn:disabled { opacity: .55; cursor: wait; }
+  .abas { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin: 20px 0 18px; }
+  .abas button { background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; padding: 10px 14px; color: var(--muted); font-weight: 600; }
+  .abas button:hover { color: var(--text); }
+  .abas button[aria-selected="true"] { color: var(--brand); border-color: var(--brand); }
+  .abas .n { display: inline-block; min-width: 1.6em; padding: 0 6px; margin-left: 4px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); font-size: .78rem; text-align: center; }
+  .barra { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .barra .sub { margin: 0; }
+  .cartoes { display: grid; gap: 10px; margin-bottom: 20px; }
+  .cartao { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--line); border-radius: 8px; padding: 16px 18px; display: grid; gap: 10px; }
+  .cartao.pendente { border-left-color: var(--restrito); }
+  .cartao.rodando { border-left-color: var(--ok); }
+  .cartao header { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+  .cartao h3 { margin: 0 0 6px; font: 700 1.05rem/1.3 var(--serif); color: var(--text); }
+  .cartao .tempo { flex: none; font: 700 1.2rem/1 var(--serif); color: var(--brand); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .cartao .tempo.ativo { color: var(--ok); }
+  .cartao .tempo small { display: block; font: 500 .7rem/1.4 system-ui, sans-serif; color: var(--muted); text-align: right; letter-spacing: .04em; text-transform: uppercase; }
+  .cartao .desc { margin: 0; color: var(--muted); font-size: .92rem; white-space: pre-line; max-width: 72ch; }
+  .cartao footer { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 10px; border-top: 1px solid var(--line); }
+  .cartao footer .sep { flex: 1; }
+  .vazio-caixa { padding: 28px 20px; text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: 8px; }
+
+  /* formulários e modais */
+  .form { display: grid; gap: 14px; }
   .form label, .form .campo { display: grid; gap: 4px; font-size: .88rem; font-weight: 600; }
   .form input, .form textarea, .form select { font: inherit; font-weight: 400; color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 9px 12px; width: 100%; }
-  .form textarea { min-height: 90px; resize: vertical; }
+  .form textarea { min-height: 84px; resize: vertical; }
   .form .linha { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .form .tempo { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-weight: 400; }
   .form .tempo input { width: 84px; }
-  .form .tempo .nota { margin: 0; }
   .form .acoes { margin: 0; }
-  .btn.mini { padding: 6px 12px; font-size: .85rem; font-weight: 600; border-width: 1px; }
-  .btn.perigo { color: var(--erro); border-color: var(--erro); background: transparent; }
   .erro { color: var(--erro); font-size: .9rem; margin: 0; }
-  .cronobox .linha-cron { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
-  .cronobox .cron { font-size: 2rem; margin: 0; }
-  .cronobox .cron.ativo { color: var(--ok); }
-  .cronobox .estado { font-size: .85rem; color: var(--muted); min-width: 7ch; }
-  .cronobox .ops { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; }
-  .cronobox .dica { font-size: .85rem; color: var(--muted); margin: 0; }
-  .sessao { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; font-size: .9rem; color: var(--muted); margin-bottom: 16px; }
+  .form.pagina { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; max-width: 420px; }
+  dialog.modal { padding: 0; border: 0; background: transparent; }
+  dialog.modal::backdrop { background: rgb(0 0 0 / .55); backdrop-filter: blur(2px); }
+  .caixa { background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 24px; width: min(560px, 94vw); max-height: 90vh; overflow: auto; box-shadow: 0 20px 60px rgb(0 0 0 / .3); }
+  .caixa h2 { margin: 0 0 2px; padding: 0; border: 0; font-size: 1.3rem; }
+  .caixa .sub { margin: 0 0 6px; font-size: .9rem; }
+  .acoes-modal { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+  #toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--topo); color: #fff;
+           padding: 10px 18px; border-radius: 999px; font-size: .9rem; box-shadow: 0 6px 20px rgb(0 0 0 / .25); transition: opacity .2s, transform .2s; z-index: 50; }
+  #toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+  /* modo foco */
+  .foco { min-height: calc(100vh - 140px); display: grid; grid-template-rows: auto 1fr; }
+  .foco-centro { display: grid; place-items: center; align-content: center; text-align: center; gap: 18px; padding: 24px 0 48px; }
+  .foco-tarefa { margin: 0; color: var(--muted); font-size: .85rem; letter-spacing: .06em; text-transform: uppercase; display: grid; gap: 8px; justify-items: center; }
+  .foco-tarefa strong { font: 700 1.3rem/1.3 var(--serif); color: var(--text); letter-spacing: 0; text-transform: none; max-width: 30ch; }
+  .relogio { font: 700 clamp(3.4rem, 15vw, 7.5rem)/1 ui-monospace, "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; letter-spacing: .02em; color: var(--text); transition: color .3s; }
+  .relogio.rodando { color: var(--ok); }
+  .relogio.pausado { color: var(--muted); }
+  .foco-estado { margin: 0; font-size: .95rem; color: var(--muted); display: flex; align-items: center; gap: 8px; min-height: 1.5em; }
+  .foco-estado .ponto { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .foco-estado .ponto.rodando { background: var(--ok); animation: pulso 1.6s ease-in-out infinite; }
+  @keyframes pulso { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ok) 50%, transparent); } 50% { box-shadow: 0 0 0 8px transparent; } }
+  .foco-acoes { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; align-items: center; }
+  .foco-dica { margin: 0; font-size: .85rem; color: var(--muted); max-width: 46ch; }
+  .foco-dica kbd { font: inherit; padding: 1px 6px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
+  .segurar { position: relative; overflow: hidden; isolation: isolate; user-select: none; -webkit-user-select: none; touch-action: none; }
+  .segurar::before { content: ""; position: absolute; inset: 0; width: 0; background: color-mix(in srgb, var(--erro) 28%, transparent); z-index: -1; }
+  .segurar.segurando::before { width: 100%; transition: width var(--dur, 2s) linear; }
+  @media (prefers-reduced-motion: reduce) { .foco-estado .ponto.rodando { animation: none; } }
 
   @media (max-width: 560px) {
     .hero { padding: 20px; } .btn { display: block; text-align: center; width: 100%; } .btn.mini { display: inline-block; width: auto; }
-    .lista li { grid-template-columns: 1fr; gap: 2px; } .lista .desc, .lista .sis { grid-column: 1; } .lista .horas { text-align: left; } .form .linha { grid-template-columns: 1fr; }
+    .lista li { grid-template-columns: 1fr; gap: 2px; } .lista .desc, .lista .tags { grid-column: 1; } .lista .horas { text-align: left; } .form .linha { grid-template-columns: 1fr; }
+    .cartao header { flex-direction: column; } .cartao .tempo small { text-align: left; } .foco-acoes .btn.grande { width: 100%; }
+    .acoes-modal { flex-direction: column-reverse; } .caixa { padding: 18px; } .abas button { padding: 10px 10px; }
     ol.passos li { padding: 16px 14px; gap: 10px; } .versao { grid-template-columns: 1fr; gap: 4px; }
   }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
@@ -425,7 +483,7 @@ async function supa() {
 }
 const hoje = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
 const segundosDe = a => a.segundos + (a.timer_inicio ? Math.max(0, Math.round((Date.now() - new Date(a.timer_inicio)) / 1000)) : 0);
-const fmtHoras = s => { const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60); return h ? `${h}h ${String(m).padStart(2, '0')}min` : `${m}min`; };
+const fmtHoras = s => { const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60); return h ? `${h}h ${String(m).padStart(2, '0')}min` : s > 0 && s < 60 ? '<1min' : `${m}min`; };
 const fmtCron = s => [s / 3600, s % 3600 / 60, s % 60].map(x => String(Math.floor(x)).padStart(2, '0')).join(':');
 const mesExtenso = am => { const t = new Date(am + '-01T12:00').toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }); return t[0].toUpperCase() + t.slice(1); };
 const nomeSistema = slug => PROJETOS.find(p => p.slug === slug)?.nome;
@@ -443,36 +501,31 @@ async function listarAtividades() {
   return data;
 }
 
-function itemAtividade(a, admin = false) {
-  const geral = a.sistema === 'geral', sis = !geral && a.sistema && nomeSistema(a.sistema), s = segundosDe(a), rodando = !!a.timer_inicio;
+const tagSistema = a => a.sistema === 'geral' ? '<span class="tag">Geral</span>'
+  : a.sistema && nomeSistema(a.sistema) ? `<a class="tag link" href="#/${esc(a.sistema)}">${esc(nomeSistema(a.sistema))}</a>` : '';
+
+function itemAtividade(a) {
+  const s = segundosDe(a), rodando = !!a.timer_inicio, tag = tagSistema(a);
   return `<li data-id="${esc(a.id)}">
     <span class="quando">${dataBR(a.data)}</span><span class="titulo">${esc(a.nome)}</span>
     <span class="horas${rodando ? ' rodando' : ''}" data-horas ${rodando ? 'title="Em andamento"' : ''}>${rodando ? '● ' : ''}${fmtHoras(s)}</span>
     ${a.descricao ? `<p class="desc">${esc(a.descricao)}</p>` : ''}
-    ${geral ? '<span class="sis">Geral</span>' : sis ? `<span class="sis">Sistema: <a href="#/${esc(a.sistema)}">${esc(sis)}</a></span>` : ''}
-    ${admin ? `<span class="ops"><span class="cron" data-cron aria-label="Cronômetro">${fmtCron(s)}</span>
-      <button class="btn mini" data-acao="${rodando ? 'pausar' : 'iniciar'}">${rodando ? '❚❚ Pausar' : '▶ Iniciar'}</button>
-      <button class="btn mini sec" data-acao="editar">Editar</button>
-      <button class="btn mini sec perigo" data-acao="excluir">Excluir</button></span>` : ''}
+    ${tag ? `<span class="tags">${tag}</span>` : ''}
   </li>`;
 }
 
-function listaAgrupada(lista, admin) {
+const porMes = lista => [...new Set(lista.map(a => a.data.slice(0, 7)))].map(m => [m, lista.filter(a => a.data.startsWith(m))]);
+
+function listaAgrupada(lista) {
   if (!lista.length) return '<p class="vazio">Nenhuma atividade registrada ainda.</p>';
-  const meses = [...new Set(lista.map(a => a.data.slice(0, 7)))];
-  return meses.map(m => `<h3 class="secao">${esc(mesExtenso(m))}</h3>
-    <ul class="lista">${lista.filter(a => a.data.startsWith(m)).map(a => itemAtividade(a, admin)).join('')}</ul>`).join('');
+  return porMes(lista).map(([m, itens]) => `<h3 class="secao">${esc(mesExtenso(m))}</h3><ul class="lista">${itens.map(itemAtividade).join('')}</ul>`).join('');
 }
 
 function atualizarCronometros(lista) {
   for (const a of lista) {
     if (!a.timer_inicio) continue;
-    const li = app.querySelector(`[data-id="${a.id}"]`);
-    if (!li) continue;
-    const s = segundosDe(a);
-    li.querySelector('[data-horas]').textContent = '● ' + fmtHoras(s);
-    const c = li.querySelector('[data-cron]');
-    if (c) c.textContent = fmtCron(s);
+    const el = app.querySelector(`[data-id="${a.id}"] [data-horas]`);
+    if (el) el.innerHTML = '● ' + fmtHoras(segundosDe(a)) + (el.querySelector('small') ? '<small>em andamento</small>' : '');
   }
   const t = app.querySelector('#total');
   if (t) t.textContent = fmtHoras(lista.reduce((s, a) => s + segundosDe(a), 0));
@@ -486,28 +539,31 @@ async function atividades() {
   const alvo = app.querySelector('#conteudo');
   if (!configurado()) { alvo.innerHTML = avisoConfig(); return; }
   let lista;
-  try { lista = await listarAtividades(); } catch (e) { alvo.innerHTML = erroHTML('Não foi possível carregar as atividades.', e); return; }
+  try { lista = (await listarAtividades()).filter(a => a.status !== 'pendente'); } catch (e) { alvo.innerHTML = erroHTML('Não foi possível carregar as atividades.', e); return; }
   const total = lista.reduce((s, a) => s + segundosDe(a), 0);
   alvo.innerHTML = `<p class="resumo"><span><b>${lista.length}</b> ${lista.length === 1 ? 'atividade' : 'atividades'}</span><span><b id="total">${fmtHoras(total)}</b> trabalhadas</span></p>
-    ${listaAgrupada(lista, false)}
+    ${listaAgrupada(lista)}
     <p class="nota"><a href="#/admin">Área do administrador</a></p>`;
   if (lista.some(a => a.timer_inicio)) ligarRelogio(() => atualizarCronometros(lista));
 }
 
-async function admin() {
-  document.title = 'Administração — Central de Sistemas';
-  app.innerHTML = `<a class="voltar" href="#/atividades">← Atividades de TI</a><h1>Administração</h1><div id="conteudo"><p class="vazio">Carregando…</p></div>`;
-  if (!configurado()) { app.querySelector('#conteudo').innerHTML = avisoConfig(); return; }
+// ---------- infraestrutura: sessão, modais, avisos ----------
+const telaCarregando = (voltar = '#/atividades', rotulo = 'Atividades de TI') => `<a class="voltar" href="${voltar}">← ${rotulo}</a><div id="conteudo"><p class="vazio">Carregando…</p></div>`;
+
+async function exigirSessao() {
+  if (!configurado()) { app.querySelector('#conteudo').innerHTML = avisoConfig(); return null; }
   let sb, session;
   try { sb = await supa(); ({ data: { session } } = await sb.auth.getSession()); }
-  catch (e) { app.querySelector('#conteudo').innerHTML = erroHTML('Não foi possível conectar ao Supabase.', e); return; }
-  session ? painel(sb, session) : login(sb);
+  catch (e) { app.querySelector('#conteudo').innerHTML = erroHTML('Não foi possível conectar ao Supabase.', e); return null; }
+  if (!session) { login(sb); return null; }
+  return { sb, session };
 }
 
 function login(sb) {
+  document.title = 'Entrar — Central de Sistemas';
   app.innerHTML = `<a class="voltar" href="#/atividades">← Atividades de TI</a><h1>Entrar</h1>
     <p class="sub">Acesso restrito ao responsável de TI da comarca.</p>
-    <form class="form" id="login" novalidate>
+    <form class="form pagina" id="login" novalidate>
       <label>E-mail<input type="email" name="email" required autocomplete="username"></label>
       <label>Senha<input type="password" name="senha" required autocomplete="current-password"></label>
       <p class="erro" hidden></p>
@@ -516,167 +572,353 @@ function login(sb) {
   const f = app.querySelector('#login'), erro = f.querySelector('.erro'), botao = f.querySelector('button');
   f.addEventListener('submit', async e => {
     e.preventDefault(); erro.hidden = true; botao.disabled = true;
-    const { data, error } = await sb.auth.signInWithPassword({ email: f.email.value.trim(), password: f.senha.value });
+    const { error } = await sb.auth.signInWithPassword({ email: f.email.value.trim(), password: f.senha.value });
     botao.disabled = false;
     if (error) { erro.textContent = 'E-mail ou senha incorretos.'; erro.hidden = false; return; }
-    painel(sb, data.session);
+    rota(); // volta para a tela que pediu login (#/admin ou #/foco)
+  });
+  f.email.focus();
+}
+
+function toast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) { t = document.createElement('div'); t.id = 'toast'; t.setAttribute('role', 'status'); document.body.append(t); }
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 2600);
+}
+
+function abrirModal(html) {
+  const d = document.createElement('dialog');
+  d.className = 'modal'; d.innerHTML = html;
+  document.body.append(d);
+  d.addEventListener('click', e => { if (e.target === d) d.close(); }); // clique no fundo fecha
+  d.addEventListener('close', () => d.remove());
+  d.showModal();
+  return d;
+}
+
+// caixa de confirmação; resolve true só se o usuário confirmar
+function confirmar({ titulo, texto, rotulo = 'Confirmar', perigo = false }) {
+  return new Promise(res => {
+    const d = abrirModal(`<form method="dialog" class="caixa">
+      <h2>${esc(titulo)}</h2><p class="sub">${esc(texto)}</p>
+      <div class="acoes-modal"><button class="btn sec" value="nao" type="submit">Cancelar</button>
+      <button class="btn${perigo ? ' perigo-solido' : ''}" value="sim" type="submit" autofocus>${esc(rotulo)}</button></div></form>`);
+    d.addEventListener('close', () => res(d.returnValue === 'sim'));
   });
 }
 
-function painel(sb, session) {
-  const opcoes = PROJETOS.map(p => `<option value="${esc(p.slug)}">${esc(p.nome)}</option>`).join('');
-  app.innerHTML = `<a class="voltar" href="#/atividades">← Atividades de TI</a>
-    <div class="sessao"><span>Conectado como <b>${esc(session.user.email)}</b></span><button class="btn mini sec" id="sair">Sair</button></div>
-    <h1>Atividades de TI</h1>
-    <section class="form cronobox" aria-label="Cronômetro">
-      <strong>Cronômetro</strong>
-      <div class="linha-cron">
-        <span class="cron" id="cr-tempo" aria-live="off">00:00:00</span><span class="estado" id="cr-estado">Parado</span>
-        <span class="ops">
-          <button class="btn mini" type="button" data-cr="iniciar">▶ Iniciar</button>
-          <button class="btn mini" type="button" data-cr="pausar" hidden>❚❚ Pausar</button>
-          <button class="btn mini" type="button" data-cr="retomar" hidden>▶ Retomar</button>
-          <button class="btn mini sec" type="button" data-cr="parar" hidden>■ Parar</button>
-          <button class="btn mini" type="button" data-cr="registrar" hidden>Registrar atividade</button>
-          <button class="btn mini sec" type="button" data-cr="zerar" hidden>Zerar</button>
-        </span>
-      </div>
-      <p class="dica" id="cr-dica">Inicie ao começar uma tarefa. Ao parar, você registra a atividade com o tempo medido.</p>
-    </section>
-    <form class="form" id="fa" novalidate>
-      <strong id="modo">Nova atividade</strong>
-      <input type="hidden" name="id">
-      <label>Nome da atividade<input name="nome" required maxlength="120" placeholder="Ex.: Atualização do Fórum Hub"></label>
-      <div class="linha">
-        <label>Data<input type="date" name="data" required></label>
-        <label>Sistema relacionado (opcional)<select name="sistema"><option value="">— nenhum —</option><option value="geral">Geral (sem sistema específico)</option>${opcoes}</select></label>
-      </div>
-      <label>Descrição<textarea name="descricao" placeholder="O que foi feito, para quem, resultado…"></textarea></label>
-      <div class="campo"><span>Tempo trabalhado</span>
-        <span class="tempo"><input type="number" name="h" min="0" step="1" value="0" aria-label="Horas"> h
-          <input type="number" name="m" min="0" max="59" step="1" value="0" aria-label="Minutos"> min
-          <span class="nota">— ou use o cronômetro na lista abaixo</span></span>
-      </div>
-      <p class="erro" hidden></p>
-      <div class="acoes"><button class="btn" type="submit">Salvar</button><button class="btn sec" type="button" id="cancelar" hidden>Cancelar edição</button></div>
-    </form>
-    <h2 id="registradas">Registradas</h2>
-    <div id="lista"><p class="vazio">Carregando…</p></div>`;
-
-  const f = app.querySelector('#fa'), erro = f.querySelector('.erro'), modo = f.querySelector('#modo'),
-        cancelar = f.querySelector('#cancelar'), lista = app.querySelector('#lista');
-  let itens = [], editando = null;
-  const falhou = (msg, e) => { erro.textContent = `${msg} (${e.message || e})`; erro.hidden = false; };
-  const tabela = () => sb.from('atividades');
-
-  // Cronômetro independente (guardado neste navegador para sobreviver a recarregamentos)
-  const CR_CHAVE = 'central-cronometro';
-  let cr = { estado: 'parado', acumulado: 0, inicio: null }, crAplicado = false;
-  try { const s = JSON.parse(localStorage.getItem(CR_CHAVE)); if (s && s.estado) cr = s; } catch {}
-  const crGuardar = () => { try { localStorage.setItem(CR_CHAVE, JSON.stringify(cr)); } catch {} };
-  const crSegundos = () => cr.acumulado + (cr.inicio ? Math.max(0, Math.round((Date.now() - cr.inicio) / 1000)) : 0);
-  const crTempo = app.querySelector('#cr-tempo'), crEstado = app.querySelector('#cr-estado'), crBox = app.querySelector('.cronobox');
-  const rotulos = { parado: 'Parado', rodando: 'Contando', pausado: 'Pausado', finalizado: 'Finalizado' };
-  const visiveis = { parado: ['iniciar'], rodando: ['pausar', 'parar'], pausado: ['retomar', 'parar'], finalizado: ['registrar', 'zerar'] };
-  const crPintar = () => {
-    const s = crSegundos();
-    crTempo.textContent = fmtCron(s); crTempo.classList.toggle('ativo', cr.estado === 'rodando');
-    crEstado.textContent = rotulos[cr.estado];
-    crBox.querySelectorAll('[data-cr]').forEach(b => { b.hidden = !visiveis[cr.estado].includes(b.dataset.cr); });
-    const reg = crBox.querySelector('[data-cr="registrar"]');
-    if (cr.estado === 'finalizado') reg.textContent = `Registrar atividade com ${fmtHoras(Math.max(60, s))}`;
-  };
-  const crZerar = () => { cr = { estado: 'parado', acumulado: 0, inicio: null }; crAplicado = false; crGuardar(); crPintar(); };
-  crBox.addEventListener('click', e => {
-    const b = e.target.closest('[data-cr]');
-    if (!b) return;
-    const acao = b.dataset.cr;
-    if (acao === 'iniciar' || acao === 'retomar') { cr.inicio = Date.now(); cr.estado = 'rodando'; }
-    else if (acao === 'pausar') { cr.acumulado = crSegundos(); cr.inicio = null; cr.estado = 'pausado'; }
-    else if (acao === 'parar') { cr.acumulado = crSegundos(); cr.inicio = null; cr.estado = 'finalizado'; }
-    else if (acao === 'zerar') { crZerar(); return; }
-    else if (acao === 'registrar') {
-      const min = Math.max(1, Math.round(cr.acumulado / 60)); // arredonda para minutos; mínimo de 1
-      f.h.value = Math.floor(min / 60); f.m.value = min % 60;
-      crAplicado = true;
-      f.scrollIntoView({ block: 'start' }); f.nome.focus();
-      return;
-    }
-    crGuardar(); crPintar();
+// botão que precisa ser segurado por `ms` para disparar; teclado cai na confirmação em caixa
+function segurar(btn, ms, fn, confirmacao) {
+  let t = null;
+  const solta = () => { clearTimeout(t); t = null; btn.classList.remove('segurando'); };
+  btn.style.setProperty('--dur', ms + 'ms');
+  btn.addEventListener('pointerdown', e => {
+    if (e.button !== 0) return;
+    try { btn.setPointerCapture(e.pointerId); } catch {} // mantém o gesto mesmo se o dedo/mouse sair um pouco do botão
+    btn.classList.add('segurando');
+    t = setTimeout(() => { solta(); fn(); }, ms);
   });
-  const tique = () => { atualizarCronometros(itens); if (cr.estado === 'rodando') crPintar(); };
+  ['pointerup', 'pointercancel', 'pointerleave', 'lostpointercapture'].forEach(ev => btn.addEventListener(ev, solta));
+  btn.addEventListener('keydown', async e => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+    if (await confirmar(confirmacao)) fn();
+  });
+}
 
-  const limpar = () => {
-    f.reset(); f.id.value = ''; f.data.value = hoje(); editando = null; erro.hidden = true;
-    modo.textContent = 'Nova atividade'; cancelar.hidden = true;
+// formulário de atividade em modal. modo: 'pendente' (rápido) | 'lancar' (completo) | 'editar'
+// resolve true quando salvou
+function modalAtividade(sb, { modo, atividade = null, segundos = 0 }) {
+  const a = atividade || {};
+  const completo = modo !== 'pendente';
+  const s = atividade ? segundosDe(atividade) : segundos;
+  const opcoes = `<option value="">— nenhum —</option><option value="geral">Geral (sem sistema específico)</option>${PROJETOS.map(p => `<option value="${esc(p.slug)}">${esc(p.nome)}</option>`).join('')}`;
+  const titulos = { pendente: 'Nova pendência', lancar: 'Lançar atividade', editar: 'Editar atividade' };
+  const subs = { pendente: 'Anote o que falta fazer. Só você vê as pendências.', lancar: 'Registre uma atividade já concluída, com o tempo que levou.', editar: '' };
+  const sistema = `<label>Sistema relacionado<select name="sistema">${opcoes}</select></label>`;
+  const html = `<form class="caixa form" novalidate>
+    <h2>${titulos[modo]}</h2>${subs[modo] ? `<p class="sub">${subs[modo]}</p>` : ''}
+    <label>Nome<input name="nome" required maxlength="120" value="${esc(a.nome || '')}" placeholder="${modo === 'pendente' ? 'Ex.: Atualizar o Fórum Hub' : 'Ex.: Atualização do Fórum Hub'}"></label>
+    ${completo ? `<div class="linha"><label>Data<input type="date" name="data" value="${esc(a.data || hoje())}" required></label>${sistema}</div>` : sistema}
+    <label>Descrição<textarea name="descricao" placeholder="${modo === 'pendente' ? 'Detalhes, para quem, prazo…' : 'O que foi feito, para quem, resultado…'}">${esc(a.descricao || '')}</textarea></label>
+    ${completo ? `<div class="campo"><span>Tempo trabalhado</span><span class="tempo">
+        <input type="number" name="h" min="0" step="1" value="${Math.floor(s / 3600)}" aria-label="Horas"> h
+        <input type="number" name="m" min="0" max="59" step="1" value="${Math.floor(s % 3600 / 60)}" aria-label="Minutos"> min</span></div>` : ''}
+    ${modo === 'editar' ? `<label>Situação<select name="status"><option value="concluida">Concluída (aparece na página pública)</option><option value="pendente">Pendente (só o administrador vê)</option></select></label>` : ''}
+    <p class="erro" hidden></p>
+    <div class="acoes-modal"><button type="button" class="btn sec" data-fechar>Cancelar</button><button class="btn" type="submit">${modo === 'pendente' ? 'Adicionar' : 'Salvar'}</button></div>
+  </form>`;
+  return new Promise(res => {
+    const d = abrirModal(html), f = d.querySelector('form'), erro = f.querySelector('.erro');
+    let salvo = false;
+    f.sistema.value = a.sistema || '';
+    if (f.status) f.status.value = a.status === 'pendente' ? 'pendente' : 'concluida';
+    d.querySelector('[data-fechar]').addEventListener('click', () => d.close());
+    d.addEventListener('close', () => res(salvo));
+    f.addEventListener('submit', async e => {
+      e.preventDefault(); erro.hidden = true;
+      const nome = f.nome.value.trim();
+      if (!nome || (completo && !f.data.value)) { erro.textContent = completo ? 'Informe o nome e a data.' : 'Informe o nome da pendência.'; erro.hidden = false; return; }
+      const dados = { nome, descricao: f.descricao.value.trim() || null, sistema: f.sistema.value || null };
+      if (completo) {
+        dados.data = f.data.value;
+        dados.segundos = (Number(f.h.value) || 0) * 3600 + (Number(f.m.value) || 0) * 60;
+        dados.status = f.status ? f.status.value : 'concluida';
+        if (atividade?.timer_inicio) dados.timer_inicio = new Date().toISOString(); // tempo digitado já inclui o decorrido
+      } else { dados.status = 'pendente'; dados.data = hoje(); }
+      f.querySelector('[type=submit]').disabled = true;
+      const { error } = atividade ? await sb.from('atividades').update(dados).eq('id', atividade.id) : await sb.from('atividades').insert(dados);
+      f.querySelector('[type=submit]').disabled = false;
+      if (error) { erro.textContent = `Não foi possível salvar (${error.message}).`; erro.hidden = false; return; }
+      salvo = true; d.close();
+    });
+    f.nome.focus();
+  });
+}
+
+// pausa qualquer cronômetro de atividade que esteja rodando no banco
+async function pausarTodos(sb, excetoId = null) {
+  const { data, error } = await sb.from('atividades').select('*').not('timer_inicio', 'is', null);
+  if (error) throw error;
+  for (const a of data.filter(a => a.id !== excetoId)) {
+    const { error: e2 } = await sb.from('atividades').update({ segundos: segundosDe(a), timer_inicio: null }).eq('id', a.id);
+    if (e2) throw e2;
+  }
+}
+
+async function concluirAtividade(sb, a) {
+  const dados = { status: 'concluida', data: hoje() };
+  if (a.timer_inicio) { dados.segundos = segundosDe(a); dados.timer_inicio = null; }
+  const { error } = await sb.from('atividades').update(dados).eq('id', a.id);
+  if (error) throw error;
+}
+
+// ---------- administração ----------
+function cartao(a) {
+  const pend = a.status === 'pendente', s = segundosDe(a), rodando = !!a.timer_inicio;
+  return `<article class="cartao${pend ? ' pendente' : ''}${rodando ? ' rodando' : ''}" data-id="${esc(a.id)}">
+    <header>
+      <div><h3>${esc(a.nome)}</h3>
+        <div class="tags">${tagSistema(a)}<span class="tag${pend ? ' prazo' : ''}">${pend ? 'anotada em ' : ''}${dataBR(a.data)}</span></div></div>
+      <span class="tempo${rodando ? ' ativo' : ''}" data-horas>${rodando ? '● ' : ''}${fmtHoras(s)}<small>${rodando ? 'em andamento' : pend ? 'já dedicado' : 'trabalhadas'}</small></span>
+    </header>
+    ${a.descricao ? `<p class="desc">${esc(a.descricao)}</p>` : ''}
+    <footer>
+      ${pend ? '<button class="btn mini" data-acao="concluir">✓ Concluir</button>' : ''}
+      <a class="btn mini${pend ? ' sec' : ''}" href="#/foco/${esc(a.id)}">${rodando ? '◉ Ver no foco' : '▶ Focar'}</a>
+      <span class="sep"></span>
+      <button class="btn mini sec" data-acao="editar">Editar</button>
+      <button class="btn mini sec perigo" data-acao="excluir">Excluir</button>
+    </footer>
+  </article>`;
+}
+
+async function admin() {
+  document.title = 'Administração — Central de Sistemas';
+  app.innerHTML = telaCarregando();
+  const sessao = await exigirSessao();
+  if (!sessao) return;
+  const { sb, session } = sessao;
+  let aba = 'pendentes';
+  try { aba = localStorage.getItem('central-aba') || 'pendentes'; } catch {}
+
+  app.innerHTML = `<div id="adm">
+    <div class="sessao"><span>Conectado como <b>${esc(session.user.email)}</b></span>
+      <span class="ops"><a class="btn mini" href="#/foco">◉ Modo foco</a><button class="btn mini sec" id="sair">Sair</button></span></div>
+    <h1>Atividades de TI</h1>
+    <div class="abas" role="tablist">
+      <button role="tab" data-aba="pendentes" aria-selected="false">Pendentes<span class="n" id="n-pend">…</span></button>
+      <button role="tab" data-aba="registradas" aria-selected="false">Registradas<span class="n" id="n-reg">…</span></button>
+    </div>
+    <section id="painel-pendentes" role="tabpanel" hidden>
+      <div class="barra"><p class="sub">O que ainda falta fazer. Só você vê esta lista.</p><button class="btn mini" data-novo="pendente">＋ Nova pendência</button></div>
+      <div id="lista-pendentes"></div>
+    </section>
+    <section id="painel-registradas" role="tabpanel" hidden>
+      <div class="barra"><p class="sub">Atividades concluídas, visíveis na página pública.</p><button class="btn mini" data-novo="lancar">＋ Lançar atividade manual</button></div>
+      <div id="lista-registradas"></div>
+    </section>
+  </div>`;
+
+  const raiz = app.querySelector('#adm'), listaPend = raiz.querySelector('#lista-pendentes'), listaReg = raiz.querySelector('#lista-registradas');
+  let itens = [];
+
+  const mostrarAba = nome => {
+    aba = nome;
+    try { localStorage.setItem('central-aba', nome); } catch {}
+    raiz.querySelectorAll('[role=tab]').forEach(b => b.setAttribute('aria-selected', b.dataset.aba === nome));
+    raiz.querySelectorAll('[role=tabpanel]').forEach(p => { p.hidden = p.id !== 'painel-' + nome; });
   };
 
   const carregar = async () => {
-    try { itens = await listarAtividades(); } catch (e) { lista.innerHTML = erroHTML('Não foi possível carregar as atividades.', e); return; }
-    lista.innerHTML = listaAgrupada(itens, true);
+    try { itens = await listarAtividades(); }
+    catch (e) { listaPend.innerHTML = listaReg.innerHTML = erroHTML('Não foi possível carregar as atividades.', e); return; }
+    const pend = itens.filter(a => a.status === 'pendente').sort((a, b) => a.data.localeCompare(b.data) || a.criado_em.localeCompare(b.criado_em));
+    const reg = itens.filter(a => a.status !== 'pendente');
+    raiz.querySelector('#n-pend').textContent = pend.length; raiz.querySelector('#n-reg').textContent = reg.length;
+    listaPend.innerHTML = pend.length ? `<div class="cartoes">${pend.map(cartao).join('')}</div>`
+      : '<p class="vazio-caixa">Nenhuma pendência. Use "Nova pendência" para anotar o que falta fazer.</p>';
+    listaReg.innerHTML = reg.length ? porMes(reg).map(([m, l]) => `<h3 class="secao">${esc(mesExtenso(m))}</h3><div class="cartoes">${l.map(cartao).join('')}</div>`).join('')
+      : '<p class="vazio-caixa">Nenhuma atividade registrada. Conclua uma pendência ou lance uma atividade manual.</p>';
   };
 
-  const pausar = async a => {
-    const { error } = await tabela().update({ segundos: segundosDe(a), timer_inicio: null }).eq('id', a.id);
-    if (error) throw error;
-  };
-
-  f.addEventListener('submit', async e => {
-    e.preventDefault(); erro.hidden = true;
-    const nome = f.nome.value.trim();
-    if (!nome || !f.data.value) { erro.textContent = 'Informe o nome e a data da atividade.'; erro.hidden = false; return; }
-    const dados = {
-      nome, data: f.data.value, descricao: f.descricao.value.trim() || null, sistema: f.sistema.value || null,
-      segundos: (Number(f.h.value) || 0) * 3600 + (Number(f.m.value) || 0) * 60,
-    };
-    // se o cronômetro estava rodando, o tempo digitado já inclui o decorrido: reinicia a contagem a partir de agora
-    if (editando?.timer_inicio) dados.timer_inicio = new Date().toISOString();
-    const { error } = editando ? await tabela().update(dados).eq('id', editando.id) : await tabela().insert(dados);
-    if (error) return falhou('Não foi possível salvar.', error);
-    if (crAplicado) crZerar(); // o tempo do cronômetro já está salvo na atividade
-    limpar(); carregar();
-  });
-  cancelar.addEventListener('click', limpar);
-
-  lista.addEventListener('click', async e => {
+  raiz.addEventListener('click', async e => {
+    const tab = e.target.closest('[role=tab]');
+    if (tab) return mostrarAba(tab.dataset.aba);
+    const novo = e.target.closest('[data-novo]');
+    if (novo) {
+      if (await modalAtividade(sb, { modo: novo.dataset.novo })) { toast(novo.dataset.novo === 'pendente' ? 'Pendência adicionada.' : 'Atividade registrada.'); carregar(); }
+      return;
+    }
     const b = e.target.closest('[data-acao]');
     if (!b) return;
     const a = itens.find(x => x.id === b.closest('[data-id]').dataset.id);
     if (!a) return;
     try {
-      if (b.dataset.acao === 'iniciar') {
-        for (const outra of itens.filter(x => x.timer_inicio)) await pausar(outra); // só um cronômetro por vez
-        const { error } = await tabela().update({ timer_inicio: new Date().toISOString() }).eq('id', a.id);
+      if (b.dataset.acao === 'concluir') { await concluirAtividade(sb, a); toast(`"${a.nome}" concluída e registrada hoje.`); }
+      else if (b.dataset.acao === 'editar') { if (!await modalAtividade(sb, { modo: 'editar', atividade: a })) return; toast('Atividade atualizada.'); }
+      else if (b.dataset.acao === 'excluir') {
+        if (!await confirmar({ titulo: 'Excluir atividade?', texto: `"${a.nome}" será apagada definitivamente.`, rotulo: 'Excluir', perigo: true })) return;
+        const { error } = await sb.from('atividades').delete().eq('id', a.id);
         if (error) throw error;
-      } else if (b.dataset.acao === 'pausar') {
-        await pausar(a);
-      } else if (b.dataset.acao === 'excluir') {
-        if (!confirm(`Excluir a atividade "${a.nome}"? Esta ação não pode ser desfeita.`)) return;
-        const { error } = await tabela().delete().eq('id', a.id);
-        if (error) throw error;
-        if (editando?.id === a.id) limpar();
-      } else if (b.dataset.acao === 'editar') {
-        editando = a; const s = segundosDe(a);
-        f.id.value = a.id; f.nome.value = a.nome; f.data.value = a.data; f.sistema.value = a.sistema || ''; f.descricao.value = a.descricao || '';
-        f.h.value = Math.floor(s / 3600); f.m.value = Math.floor(s % 3600 / 60);
-        modo.textContent = `Editando: ${a.nome}`; cancelar.hidden = false; erro.hidden = true;
-        f.scrollIntoView({ block: 'start' }); f.nome.focus();
-        return;
+        toast('Atividade excluída.');
       }
-    } catch (err) { return falhou('A operação falhou.', err); }
+    } catch (err) { toast(`A operação falhou: ${err.message || err}`); }
     carregar();
   });
 
-  app.querySelector('#sair').addEventListener('click', async () => { pararRelogio(); await sb.auth.signOut(); login(sb); });
+  raiz.querySelector('#sair').addEventListener('click', async () => { pararRelogio(); await sb.auth.signOut(); location.hash = '#/atividades'; });
 
-  limpar(); crPintar(); ligarRelogio(tique); carregar();
+  mostrarAba(aba); ligarRelogio(() => atualizarCronometros(itens)); carregar();
 }
 
+// ---------- modo foco ----------
+const CR_CHAVE = 'central-cronometro';
+const crLer = () => { try { const s = JSON.parse(localStorage.getItem(CR_CHAVE)); if (s && s.estado) return s; } catch {} return { estado: 'parado', acumulado: 0, inicio: null }; };
+const crGravar = cr => { try { localStorage.setItem(CR_CHAVE, JSON.stringify(cr)); } catch {} };
+
+async function foco(id) {
+  document.title = 'Modo foco — Central de Sistemas';
+  app.innerHTML = telaCarregando('#/admin', 'Administração');
+  const sessao = await exigirSessao();
+  if (!sessao) return;
+  const { sb } = sessao;
+
+  // atividade vinculada (opcional): o tempo vai direto para ela, no banco
+  let a = null;
+  if (id) {
+    const { data, error } = await sb.from('atividades').select('*').eq('id', id).maybeSingle();
+    if (error || !data) { app.querySelector('#conteudo').innerHTML = '<p class="vazio-caixa">Atividade não encontrada. <a href="#/foco">Abrir o cronômetro livre</a></p>'; return; }
+    a = data;
+  }
+  let cr = a ? null : crLer(); // cronômetro livre fica neste navegador
+
+  app.innerHTML = `<div class="foco">
+    <a class="voltar" href="#/admin">← Administração</a>
+    <div class="foco-centro">
+      <p class="foco-tarefa">${a ? `${a.status === 'pendente' ? 'Pendência' : 'Atividade'}<strong>${esc(a.nome)}</strong><span class="tags">${tagSistema(a)}</span>`
+        : 'Cronômetro livre<span class="dica" style="text-transform:none;letter-spacing:0">Ao finalizar, você registra a atividade com o tempo medido.</span>'}</p>
+      <div class="relogio" id="relogio" aria-live="off">00:00:00</div>
+      <p class="foco-estado" id="estado"></p>
+      <div class="foco-acoes" id="acoes"></div>
+      <p class="foco-dica" id="dica"></p>
+    </div></div>`;
+  const relogio = app.querySelector('#relogio'), estadoEl = app.querySelector('#estado'), acoes = app.querySelector('#acoes'), dica = app.querySelector('#dica');
+  let ocupado = false;
+
+  const segundos = () => a ? segundosDe(a) : cr.acumulado + (cr.inicio ? Math.max(0, Math.round((Date.now() - cr.inicio) / 1000)) : 0);
+  const estado = () => a ? (a.timer_inicio ? 'rodando' : 'parado') : cr.estado;
+  const rotulos = { parado: 'Parado', rodando: 'Contando', pausado: 'Pausado', finalizado: 'Finalizado' };
+
+  const pintarTempo = () => {
+    const s = segundos(), e = estado();
+    relogio.textContent = fmtCron(s);
+    relogio.className = 'relogio ' + (e === 'rodando' ? 'rodando' : e === 'pausado' || e === 'finalizado' ? 'pausado' : '');
+    document.title = (e === 'rodando' ? fmtCron(s) + ' · ' : '') + 'Modo foco — Central de Sistemas';
+  };
+
+  const pintar = () => {
+    pintarTempo();
+    const e = estado(), s = segundos();
+    estadoEl.innerHTML = `<span class="ponto ${e}"></span>${rotulos[e]}${a && e === 'parado' && s ? ' · tempo acumulado da atividade' : ''}`;
+    let botoes, texto;
+    if (a) {
+      botoes = e === 'rodando'
+        ? [['pausar', '❚❚ Pausar', 'sec'], ['finalizar', '■ Finalizar', '']]
+        : [['iniciar', s ? '▶ Retomar' : '▶ Iniciar', ''], ...(a.status === 'pendente' ? [['concluir', '✓ Concluir', 'sec']] : [])];
+      texto = e === 'rodando' ? 'O tempo é gravado na atividade e continua contando mesmo se você fechar esta aba.'
+        : a.status === 'pendente' ? 'Finalizar pausa o tempo e pergunta se a pendência foi concluída.' : 'Iniciar soma o tempo desta sessão ao total da atividade.';
+    } else {
+      botoes = { parado: [['iniciar', '▶ Iniciar', '']],
+        rodando: [['pausar', '❚❚ Pausar', 'sec'], ['finalizar', '■ Finalizar', '']],
+        pausado: [['retomar', '▶ Retomar', ''], ['finalizar', '■ Finalizar', 'sec'], ['descartar', 'Descartar', 'mini sec perigo segurar']],
+        finalizado: [['registrar', 'Registrar atividade', ''], ['retomar', '▶ Retomar', 'sec'], ['descartar', 'Descartar', 'mini sec perigo segurar']] }[e];
+      texto = { parado: 'Pressione <kbd>Espaço</kbd> para iniciar ou pausar.', rodando: 'O cronômetro continua contando se você recarregar a página.',
+        pausado: 'Retome quando voltar à tarefa. Segure "Descartar" por 2 segundos para zerar.',
+        finalizado: `Registre a atividade com ${fmtHoras(Math.max(60, s))} ou retome a contagem.` }[e];
+    }
+    acoes.innerHTML = botoes.map(([acao, rotulo, cls]) => `<button class="btn ${cls.includes('mini') ? cls : 'grande ' + cls}" data-acao="${acao}" ${cls.includes('segurar') ? 'title="Segure por 2 segundos"' : ''}>${rotulo}</button>`).join('');
+    dica.innerHTML = texto;
+    const seg = acoes.querySelector('.segurar');
+    if (seg) segurar(seg, 2000, () => executar('descartar!'), { titulo: 'Zerar o cronômetro?', texto: `Você vai perder ${fmtHoras(Math.max(60, s))} medidos.`, rotulo: 'Zerar', perigo: true });
+  };
+
+  const recarregarAtividade = async () => {
+    const { data } = await sb.from('atividades').select('*').eq('id', a.id).maybeSingle();
+    if (data) a = data;
+  };
+
+  const executar = async acao => {
+    if (ocupado) return;
+    ocupado = true;
+    try {
+      if (a) { // vinculado: tudo no banco
+        if (acao === 'iniciar') { await pausarTodos(sb, a.id); const { error } = await sb.from('atividades').update({ timer_inicio: new Date().toISOString() }).eq('id', a.id); if (error) throw error; }
+        else if (acao === 'pausar') { const { error } = await sb.from('atividades').update({ segundos: segundosDe(a), timer_inicio: null }).eq('id', a.id); if (error) throw error; }
+        else if (acao === 'finalizar' || acao === 'concluir') {
+          if (a.timer_inicio) { const { error } = await sb.from('atividades').update({ segundos: segundosDe(a), timer_inicio: null }).eq('id', a.id); if (error) throw error; await recarregarAtividade(); }
+          if (a.status === 'pendente' && await confirmar({ titulo: 'Concluir a pendência?', texto: `"${a.nome}" vai para as registradas com a data de hoje, com ${fmtHoras(segundosDe(a))} de trabalho.`, rotulo: 'Concluir' })) {
+            await concluirAtividade(sb, a); toast('Pendência concluída.'); location.hash = '#/admin'; return;
+          }
+          if (acao === 'finalizar') { toast('Tempo salvo na atividade.'); location.hash = '#/admin'; return; }
+        }
+        await recarregarAtividade();
+      } else { // livre: estado local
+        if (acao === 'iniciar' || acao === 'retomar') { cr.inicio = Date.now(); cr.estado = 'rodando'; }
+        else if (acao === 'pausar') { cr.acumulado = segundos(); cr.inicio = null; cr.estado = 'pausado'; }
+        else if (acao === 'finalizar') { cr.acumulado = segundos(); cr.inicio = null; cr.estado = 'finalizado'; }
+        else if (acao === 'descartar!') { cr = { estado: 'parado', acumulado: 0, inicio: null }; toast('Cronômetro zerado.'); }
+        else if (acao === 'registrar') {
+          if (await modalAtividade(sb, { modo: 'lancar', segundos: Math.max(60, Math.round(cr.acumulado / 60) * 60) })) { cr = { estado: 'parado', acumulado: 0, inicio: null }; toast('Atividade registrada.'); }
+        }
+        crGravar(cr);
+      }
+    } catch (err) { toast(`A operação falhou: ${err.message || err}`); }
+    ocupado = false; pintar();
+  };
+
+  acoes.addEventListener('click', e => { const b = e.target.closest('[data-acao]'); if (b && !b.classList.contains('segurar')) executar(b.dataset.acao); });
+  const tecla = e => {
+    if (e.key !== ' ' || (e.target instanceof Element && e.target.closest('input, textarea, select, button, a, dialog'))) return;
+    e.preventDefault();
+    const s = estado();
+    executar(s === 'rodando' ? 'pausar' : s === 'parado' ? 'iniciar' : 'retomar');
+  };
+  document.addEventListener('keydown', tecla);
+  aoSair.push(() => { document.removeEventListener('keydown', tecla); document.title = 'Central de Sistemas — Comarca de Rio Real'; });
+
+  pintar(); ligarRelogio(pintarTempo);
+}
+
+const aoSair = []; // limpezas executadas ao trocar de rota
 function rota() {
   pararRelogio();
+  aoSair.splice(0).forEach(fn => fn());
   const h = location.hash.slice(2);
   if (h === 'atividades') return atividades();
   if (h === 'admin') return admin();
+  if (h === 'foco' || h.startsWith('foco/')) return foco(h.slice(5) || null);
   const p = PROJETOS.find(p => p.slug === h);
   p ? detalhe(p) : catalogo();
 }

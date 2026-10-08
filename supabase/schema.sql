@@ -8,6 +8,7 @@ create table if not exists public.atividades (
   descricao     text,
   sistema       text,                          -- slug do catálogo (opcional)
   segundos      integer not null default 0 check (segundos >= 0), -- tempo trabalhado acumulado
+  status        text not null default 'concluida' check (status in ('pendente', 'concluida')), -- pendente = só o admin vê
   timer_inicio  timestamptz,                   -- preenchido enquanto o cronômetro está rodando
   criado_em     timestamptz not null default now(),
   atualizado_em timestamptz not null default now()
@@ -34,11 +35,13 @@ create trigger atividades_atualizado_em
 alter table public.atividades enable row level security;
 
 drop policy if exists "leitura publica"     on public.atividades;
+drop policy if exists "leitura admin"       on public.atividades;
 drop policy if exists "inserir autenticado" on public.atividades;
 drop policy if exists "editar autenticado"  on public.atividades;
 drop policy if exists "excluir autenticado" on public.atividades;
 
-create policy "leitura publica"     on public.atividades for select using (true);
+create policy "leitura publica"     on public.atividades for select using (status = 'concluida');
+create policy "leitura admin"       on public.atividades for select to authenticated using (true);
 create policy "inserir autenticado" on public.atividades for insert to authenticated with check (true);
 create policy "editar autenticado"  on public.atividades for update to authenticated using (true) with check (true);
 create policy "excluir autenticado" on public.atividades for delete to authenticated using (true);
