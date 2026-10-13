@@ -9,14 +9,13 @@
     --bg: #f3f4f6; --surface: #fff; --text: #1a2330; --muted: #5a6573; --line: #d9dee5;
     --topo: #0f2a47; --topo-text: #fff; --brand: #0f2a47; --btn: #0f2a47; --btn-text: #fff;
     --ok: #1d7a55; --restrito: #a86a00; --breve: #7a8494; --aviso-bg: #fdf4e0; --aviso-line: #a86a00;
-    --erro: #b3261e;
     --serif: Georgia, "Times New Roman", serif;
   }
   @media (prefers-color-scheme: dark) {
     :root {
       --bg: #0e141b; --surface: #161e28; --text: #e4e9ef; --muted: #98a4b3; --line: #293442;
       --topo: #0a1522; --brand: #9cc3ee; --btn: #9cc3ee; --btn-text: #0a1522;
-      --ok: #5fc79d; --restrito: #e6b450; --breve: #8a96a6; --aviso-bg: #2b2412; --aviso-line: #e6b450; --erro: #ff8a80;
+      --ok: #5fc79d; --restrito: #e6b450; --breve: #8a96a6; --aviso-bg: #2b2412; --aviso-line: #e6b450;
     }
   }
   * { box-sizing: border-box; }
@@ -32,6 +31,28 @@
   .topo a { color: inherit; text-decoration: none; font: 700 1.2rem var(--serif); letter-spacing: .01em; }
   .topo span { font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; opacity: .8; }
   .topo :focus-visible { outline-color: #fff; }
+  .topo .menu { flex-basis: 100%; margin-top: -6px; }
+  .topo .menu a { font: 600 .85rem system-ui, sans-serif; opacity: .85; text-decoration: underline; text-underline-offset: 3px; }
+  .dia { display: grid; grid-template-columns: 130px 1fr; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .dia time { font-weight: 700; color: var(--brand); }
+  .dia ul { margin: 0; padding-left: 18px; }
+  .dia li { margin-bottom: 4px; }
+  .dia .proj { font-size: .78rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; margin-right: 6px; }
+  .dia .proj::after { content: "·"; margin-left: 6px; color: var(--muted); }
+  .github { font-size: .9rem; margin: -8px 0 16px; }
+  .dia li .chip { margin-left: 6px; padding: 0 7px; font-size: .75rem; vertical-align: middle; }
+  .horas { display: block; font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .dia li .horas { display: inline; margin-left: 6px; }
+  .publicar .linha label.status { display: flex; align-items: center; gap: 6px; }
+  .publicar .linha label.status input { flex: none; padding: 7px 10px; }
+  .publicar { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px 20px; margin: 0 0 20px; }
+  .publicar form { display: grid; gap: 10px; }
+  .publicar textarea, .publicar input, .publicar select { font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; width: 100%; }
+  .publicar .linha { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .publicar .linha input, .publicar .linha select { width: auto; flex: 1; }
+  .publicar .erro { color: var(--restrito); font-size: .9rem; margin: 0; }
+  .publicar .erro:empty { display: none; }
+  @media (max-width: 560px) { .dia { grid-template-columns: 1fr; gap: 4px; } }
 
   main { padding-block: 32px 64px; }
   h1, h2 { font-family: var(--serif); font-weight: 700; line-height: 1.25; }
@@ -101,105 +122,8 @@
   dialog::backdrop { background: rgb(0 0 0 / .8); }
   dialog img { display: block; max-width: 96vw; max-height: 92vh; cursor: zoom-out; border-radius: 4px; }
 
-  /* atividades (pública) */
-  .topo .nav-topo { display: flex; gap: 18px; align-items: baseline; flex-wrap: wrap; }
-  .topo .nav-topo a { font: 600 .9rem system-ui, "Segoe UI", sans-serif; letter-spacing: 0; opacity: .85; }
-  .topo .nav-topo a:hover { opacity: 1; text-decoration: underline; }
-  .resumo { display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: .9rem; color: var(--muted); margin: 0 0 8px; }
-  .resumo b { color: var(--text); font: 700 1.15rem var(--serif); }
-  .lista { list-style: none; margin: 0 0 24px; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
-  .lista li { display: grid; grid-template-columns: 92px 1fr auto; gap: 4px 16px; padding: 14px 18px; align-items: baseline; }
-  .lista li + li { border-top: 1px solid var(--line); }
-  .lista .quando { font-size: .88rem; color: var(--muted); white-space: nowrap; }
-  .lista .titulo { font-weight: 600; }
-  .lista .desc { grid-column: 2; margin: 0; color: var(--muted); font-size: .92rem; white-space: pre-line; max-width: 68ch; }
-  .lista .tags { grid-column: 2; }
-  .lista .horas { font-variant-numeric: tabular-nums; font-size: .9rem; color: var(--muted); white-space: nowrap; text-align: right; }
-  .lista .horas.rodando { color: var(--ok); font-weight: 600; }
-
-  /* badges */
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-  .tag { display: inline-block; font-size: .74rem; font-weight: 600; letter-spacing: .02em; padding: 2px 9px; border-radius: 999px;
-         background: var(--bg); border: 1px solid var(--line); color: var(--muted); text-decoration: none; white-space: nowrap; }
-  .tag.link { color: var(--brand); border-color: color-mix(in srgb, var(--brand) 40%, transparent); }
-  .tag.link:hover { background: var(--brand); color: var(--btn-text); }
-  .tag.prazo { color: var(--restrito); border-color: color-mix(in srgb, var(--restrito) 45%, transparent); }
-
-  /* administração */
-  .sessao { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; font-size: .9rem; color: var(--muted); margin-bottom: 16px; }
-  .sessao .ops { display: flex; gap: 8px; }
-  .btn.mini { padding: 7px 13px; font-size: .85rem; font-weight: 600; border-width: 1px; line-height: 1.2; }
-  .btn.perigo { color: var(--erro); border-color: var(--erro); background: transparent; }
-  .btn.perigo-solido { background: var(--erro); border-color: var(--erro); color: #fff; }
-  .btn.grande { padding: 16px 34px; font-size: 1.1rem; min-width: 170px; }
-  .btn:disabled { opacity: .55; cursor: wait; }
-  .abas { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin: 20px 0 18px; }
-  .abas button { background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; padding: 10px 14px; color: var(--muted); font-weight: 600; }
-  .abas button:hover { color: var(--text); }
-  .abas button[aria-selected="true"] { color: var(--brand); border-color: var(--brand); }
-  .abas .n { display: inline-block; min-width: 1.6em; padding: 0 6px; margin-left: 4px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); font-size: .78rem; text-align: center; }
-  .barra { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
-  .barra .sub { margin: 0; }
-  .cartoes { display: grid; gap: 10px; margin-bottom: 20px; }
-  .cartao { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--line); border-radius: 8px; padding: 16px 18px; display: grid; gap: 10px; }
-  .cartao.pendente { border-left-color: var(--restrito); }
-  .cartao.rodando { border-left-color: var(--ok); }
-  .cartao header { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
-  .cartao h3 { margin: 0 0 6px; font: 700 1.05rem/1.3 var(--serif); color: var(--text); }
-  .cartao .tempo { flex: none; font: 700 1.2rem/1 var(--serif); color: var(--brand); font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .cartao .tempo.ativo { color: var(--ok); }
-  .cartao .tempo small { display: block; font: 500 .7rem/1.4 system-ui, sans-serif; color: var(--muted); text-align: right; letter-spacing: .04em; text-transform: uppercase; }
-  .cartao .desc { margin: 0; color: var(--muted); font-size: .92rem; white-space: pre-line; max-width: 72ch; }
-  .cartao footer { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 10px; border-top: 1px solid var(--line); }
-  .cartao footer .sep { flex: 1; }
-  .vazio-caixa { padding: 28px 20px; text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: 8px; }
-
-  /* formulários e modais */
-  .form { display: grid; gap: 14px; }
-  .form label, .form .campo { display: grid; gap: 4px; font-size: .88rem; font-weight: 600; }
-  .form input, .form textarea, .form select { font: inherit; font-weight: 400; color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 9px 12px; width: 100%; }
-  .form textarea { min-height: 84px; resize: vertical; }
-  .form .linha { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .form .tempo { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-weight: 400; }
-  .form .tempo input { width: 84px; }
-  .form .acoes { margin: 0; }
-  .erro { color: var(--erro); font-size: .9rem; margin: 0; }
-  .form.pagina { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; max-width: 420px; }
-  dialog.modal { padding: 0; border: 0; background: transparent; }
-  dialog.modal::backdrop { background: rgb(0 0 0 / .55); backdrop-filter: blur(2px); }
-  .caixa { background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 24px; width: min(560px, 94vw); max-height: 90vh; overflow: auto; box-shadow: 0 20px 60px rgb(0 0 0 / .3); }
-  .caixa h2 { margin: 0 0 2px; padding: 0; border: 0; font-size: 1.3rem; }
-  .caixa .sub { margin: 0 0 6px; font-size: .9rem; }
-  .acoes-modal { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
-  #toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--topo); color: #fff;
-           padding: 10px 18px; border-radius: 999px; font-size: .9rem; box-shadow: 0 6px 20px rgb(0 0 0 / .25); transition: opacity .2s, transform .2s; z-index: 50; }
-  #toast.on { opacity: 1; transform: translate(-50%, 0); }
-
-  /* modo foco */
-  .foco { min-height: calc(100vh - 140px); display: grid; grid-template-rows: auto 1fr; }
-  .foco-centro { display: grid; place-items: center; align-content: center; text-align: center; gap: 18px; padding: 24px 0 48px; }
-  .foco-tarefa { margin: 0; color: var(--muted); font-size: .85rem; letter-spacing: .06em; text-transform: uppercase; display: grid; gap: 8px; justify-items: center; }
-  .foco-tarefa strong { font: 700 1.3rem/1.3 var(--serif); color: var(--text); letter-spacing: 0; text-transform: none; max-width: 30ch; }
-  .relogio { font: 700 clamp(3.4rem, 15vw, 7.5rem)/1 ui-monospace, "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; letter-spacing: .02em; color: var(--text); transition: color .3s; }
-  .relogio.rodando { color: var(--ok); }
-  .relogio.pausado { color: var(--muted); }
-  .foco-estado { margin: 0; font-size: .95rem; color: var(--muted); display: flex; align-items: center; gap: 8px; min-height: 1.5em; }
-  .foco-estado .ponto { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
-  .foco-estado .ponto.rodando { background: var(--ok); animation: pulso 1.6s ease-in-out infinite; }
-  @keyframes pulso { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ok) 50%, transparent); } 50% { box-shadow: 0 0 0 8px transparent; } }
-  .foco-acoes { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; align-items: center; }
-  .foco-dica { margin: 0; font-size: .85rem; color: var(--muted); max-width: 46ch; }
-  .foco-dica kbd { font: inherit; padding: 1px 6px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
-  .segurar { position: relative; overflow: hidden; isolation: isolate; user-select: none; -webkit-user-select: none; touch-action: none; }
-  .segurar::before { content: ""; position: absolute; inset: 0; width: 0; background: color-mix(in srgb, var(--erro) 28%, transparent); z-index: -1; }
-  .segurar.segurando::before { width: 100%; transition: width var(--dur, 2s) linear; }
-  @media (prefers-reduced-motion: reduce) { .foco-estado .ponto.rodando { animation: none; } }
-
   @media (max-width: 560px) {
-    .hero { padding: 20px; } .btn { display: block; text-align: center; width: 100%; } .btn.mini { display: inline-block; width: auto; }
-    .lista li { grid-template-columns: 1fr; gap: 2px; } .lista .desc, .lista .tags { grid-column: 1; } .lista .horas { text-align: left; } .form .linha { grid-template-columns: 1fr; }
-    .cartao header { flex-direction: column; } .cartao .tempo small { text-align: left; } .foco-acoes .btn.grande { width: 100%; }
-    .acoes-modal { flex-direction: column-reverse; } .caixa { padding: 18px; } .abas button { padding: 10px 10px; }
+    .hero { padding: 20px; } .btn { display: block; text-align: center; width: 100%; }
     ol.passos li { padding: 16px 14px; gap: 10px; } .versao { grid-template-columns: 1fr; gap: 4px; }
   }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
@@ -207,16 +131,22 @@
 </head>
 <body>
 <header class="topo"><div class="wrap">
-  <a href="#/">Central de Sistemas</a><nav class="nav-topo" aria-label="Seções do site"><a href="#/atividades">Atividades de TI</a><span>Comarca de Rio Real · TJBA</span></nav>
+  <a href="#/">Central de Sistemas</a><span>Comarca de Rio Real · TJBA</span>
+  <nav class="menu"><a href="#/atividades">Diário de desenvolvimento</a></nav>
 </div></header>
 <main class="wrap" id="app"></main>
 <dialog id="zoom" aria-label="Imagem ampliada"><img alt=""></dialog>
 
-<script src="config.js"></script>
-<script>
+<script type="module">
+// Projeto Firebase do diário (o mesmo da extensão Lembretes PJe). A API key não é segredo:
+// o que protege a escrita são as regras do Firestore (ver firestore.rules).
+const FIREBASE = { apiKey: 'AIzaSyBJwZPiNWvDiKvN-cBXWCkSLWPeVVrXXQg', authDomain: 'lembrentespje.firebaseapp.com', projectId: 'lembrentespje' };
+
 // ============================================================
-// CATÁLOGO — para adicionar um sistema ou publicar uma versão,
-// edite somente este array.
+// CATÁLOGO — para adicionar um sistema, edite somente este array.
+//   repo        : "dono/repositorio" no GitHub. O histórico de versões vem do
+//                 CHANGELOG.md desse repositório, copiado para changelog/<slug>.md
+//                 por `node sync.mjs`; "versoes" inline só é usado quando não há cópia.
 //   status.tipo : "ok" | "restrito" | "breve"
 //   acao.arquivo: true quando o botão baixa um arquivo (em vez de abrir um site)
 //   guia        : seções do tutorial; cada passo é [título, descrição, imagem opcional]
@@ -226,13 +156,14 @@
 const PROJETOS = [
   {
     slug: 'lembretes-pje',
+    repo: 'finnzao/lembretes-pje',
     nome: 'Lembretes PJe',
     tipo: 'Extensão · Chrome e Edge',
     resumo: 'Anote lembretes com prazo dentro do próprio processo no PJe, receba avisos no dia e compartilhe notas com o gabinete.',
     tags: ['pje', 'extensão', 'prazos', 'lembretes', 'gabinete'],
     status: { tipo: 'ok', rotulo: 'Disponível' },
     acao: { rotulo: 'Baixar a extensão (.zip)', url: 'downloads/lembretes-pje-chrome-0.6.0.zip', arquivo: true },
-    manual: 'downloads/lembretes-pje-manual.pdf',
+    alt: { rotulo: 'Manual completo (PDF)', url: 'downloads/lembretes-pje-manual.pdf' },
     nota: 'A extensão é um apoio e não substitui o controle oficial de prazos do PJe.',
     aviso: 'Não copie conteúdo de processos em segredo de justiça para as notas. O código do gabinete funciona como uma senha: envie apenas a quem deve participar.',
     guia: [
@@ -261,14 +192,10 @@ const PROJETOS = [
       ['A nota de um colega não apareceu', 'Abra o Painel e clique em "Atualizar".'],
       ['Não recebo avisos', 'No Painel, aba "Ajustes e conexão", clique em "Testar notificação e som" e confira se as notificações do navegador estão permitidas no Windows.'],
     ],
-    versoes: [
-      { versao: '0.6.0', data: '2026-09-11', notas: ['Painel aprimorado.', 'Melhor exibição das anotações nas listas de tarefas.'] },
-      { data: '2026-08-13', notas: ['Avisos do navegador para lembretes vencidos, com resumo agrupado.'] },
-      { data: '2026-07-24', notas: ['Contas de usuário (e-mail e senha) e gabinetes para compartilhar notas.', 'Compatibilidade com Chrome e Edge.'] },
-    ],
   },
   {
     slug: 'forum-hub',
+    repo: 'finnzao/pje-services-web',
     nome: 'Fórum Hub — PJE/TJBA',
     tipo: 'Sistema web',
     resumo: 'Baixe processos em lote, gere planilhas e aplique etiquetas sem abrir processo por processo no PJE.',
@@ -303,11 +230,6 @@ const PROJETOS = [
       ['"Servidor indisponível"', 'Aguarde alguns minutos e tente de novo; persistindo, avise o suporte.'],
       ['Alguns processos falharam', 'O resumo final mostra quantos; repita o download só para eles usando o modo "Por Lista".'],
       ['Posso fechar a aba durante o download?', 'Não. Mantenha a aba aberta até o resumo final aparecer.'],
-    ],
-    versoes: [
-      { data: '2026-10-02', notas: ['Guia do usuário com imagens.'] },
-      { data: '2026-09-29', notas: ['Download de processos mais estável.', 'Preferências lembradas entre sessões.'] },
-      { data: '2026-09-23', notas: ['Automações por Dígito: etiquetagem e geração de planilhas aprimoradas.'] },
     ],
   },
   {
@@ -344,21 +266,33 @@ const PROJETOS = [
   {
     slug: 'pdf-markdown',
     nome: 'Extrator PDF Jurídico → Markdown',
-    tipo: 'Sistema web',
-    resumo: 'Converte PDFs de processos (PJe/TJBA) em texto Markdown, com OCR automático em português para páginas digitalizadas.',
-    tags: ['pdf', 'ocr', 'markdown', 'pje'],
+    tipo: 'Sistema web · versão desktop disponível',
+    resumo: 'Converte PDFs de processos (PJe/TJBA) em Markdown limpo e fiel, com OCR em páginas digitalizadas e prompts prontos para análise por IA.',
+    tags: ['pdf', 'ocr', 'markdown', 'pje', 'ia'],
     status: { tipo: 'ok', rotulo: 'Disponível' },
-    acao: { rotulo: 'Abrir o Extrator de PDF', url: 'https://juristjba.github.io/pdfToMarkDownJusRR/' },
-    nota: '100% local: os PDFs não saem do seu navegador.',
+    acao: { rotulo: 'Abrir a versão web', url: 'https://comarca-extrator-pdf-juridico.hf.space/' },
+    alt: { rotulo: 'Baixar versão desktop (.zip)', url: 'https://github.com/finnzao/pdfToMarkDown/archive/refs/heads/main.zip' },
+    nota: 'Na versão web os PDFs são enviados ao servidor da aplicação para processamento. Para autos sigilosos, prefira a versão desktop, que processa tudo no seu computador.',
     guia: [
-      { passos: [
-        ['Arraste os PDFs para a página', 'Ou clique na área indicada para selecionar. Vários arquivos são processados em paralelo.'],
-        ['Deixe o OCR no automático', 'Páginas digitalizadas (imagem) são reconhecidas sozinhas. Use "Forçar OCR em tudo" apenas se o texto sair incompleto.'],
-        ['Aguarde o processamento', 'O tempo depende do tamanho do PDF e do computador. Arquivos já processados voltam na hora graças ao cache.'],
-        ['Baixe o resultado', 'Baixe cada arquivo ou use "Baixar todos (ZIP)".'],
+      { secao: 'Versão web', passos: [
+        ['Arraste os PDFs dos processos para a página', 'Ou clique na área indicada. Vários arquivos entram em fila e são processados um a um.'],
+        ['Escolha a análise (opcional)', 'Em "Análise", selecione a área (Cartórios, Assessoria Jurídica, Magistrados ou Universais) e o prompt que será embutido no arquivo. A proteção contra prompt injection é sempre incluída.'],
+        ['Juntar processos em lote (opcional)', 'Marque a opção e escolha o tamanho do lote conforme a IA que vai usar: 400 KB (qualquer IA), 2 MB (janela de 1 milhão de tokens) ou 8 MB (ferramentas como NotebookLM).'],
+        ['Baixe o resultado', 'Cada arquivo tem o seu .md; "Baixar todos (.zip)" leva tudo de uma vez.'],
+      ]},
+      { secao: 'Versão desktop (instalação única)', passos: [
+        ['Baixe e extraia o .zip', 'Clique com o botão direito no arquivo e escolha "Extrair Tudo…". Não abra o programa de dentro do .zip.'],
+        ['Execute instalar.bat', 'Abre uma janela preta; aguarde a mensagem "Instalação concluída!" (pode levar alguns minutos e exige internet).'],
+        ['No dia a dia, execute iniciar.bat', 'O navegador abre sozinho com o programa. Para encerrar, feche a janela preta.'],
       ]},
     ],
+    faq: [
+      ['O navegador abriu com "página não encontrada"', 'Aguarde alguns segundos e pressione F5.'],
+      ['A instalação falhou', 'Verifique a conexão com a internet e execute instalar.bat novamente.'],
+      ['O texto saiu incompleto em um processo antigo', 'Páginas escaneadas passam por OCR automático; peças reconhecidas por OCR levam a nota "[peça reconhecida por OCR]" no arquivo e podem ter erros de leitura.'],
+    ],
     versoes: [
+      { data: '2026-10-13', notas: ['Versão web publicada.', 'Versão desktop disponível para download.'] },
       { data: '2026-10-02', notas: ['Sistema incluído na Central.'] },
     ],
   },
@@ -388,7 +322,22 @@ const zoom = document.getElementById('zoom');
 const esc = s => String(s).replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`);
 const norm = s => s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
 const dataBR = iso => iso.split('-').reverse().join('/');
-const ordenadas = p => [...p.versoes].sort((a, b) => b.data.localeCompare(a.data));
+const LOGS = {};   // slug -> versões lidas de changelog/<slug>.md
+let ATIVS = [];    // atividades do diário, vindas do Firestore em tempo real
+let USUARIO = null; // desenvolvedor logado (ou null)
+let FB = null;      // Firebase carregado (ou null, sem rede)
+const porData = (a, b) => b.data.localeCompare(a.data);
+
+// Markdown mínimo: blocos "## 0.6.0 — 2026-09-11" ou "## 2026-09-11", seguidos de linhas "- ..."
+const parseMd = md => md.split(/^## /m).slice(1).map(bloco => {
+  const [cab, ...linhas] = bloco.trim().split('\n');
+  const data = cab.match(/\d{4}-\d{2}-\d{2}/)?.[0];
+  const versao = cab.replace(data ?? '', '').replace(/[\s—–-]+$/, '').trim() || undefined;
+  const notas = linhas.filter(l => l.startsWith('- ')).map(l => l.slice(2).trim());
+  return { versao, data, notas };
+}).filter(v => v.data && v.notas.length);
+const lerMd = url => fetch(url, { cache: 'no-cache' }).then(r => r.ok ? r.text() : Promise.reject(r.status)).then(parseMd);
+const ordenadas = p => [...(LOGS[p.slug] || p.versoes || [])].sort(porData);
 const status = p => `<span class="status ${esc(p.status.tipo)}">${esc(p.status.rotulo)}</span>`;
 const rotuloVersao = v => v.versao ? `v${esc(v.versao)}` : dataBR(v.data);
 
@@ -443,7 +392,7 @@ function detalhe(p) {
       <div class="meta">${status(p)}<span>${esc(p.tipo)}</span><span>Versão atual: ${rotuloVersao(versoes[0])}</span><span>Atualizado em ${dataBR(versoes[0].data)}</span></div>
       <h1>${esc(p.nome)}</h1>
       <p class="sub">${esc(p.resumo)}</p>
-      <div class="acoes">${botao}${p.manual ? `<a class="btn sec" href="${esc(p.manual)}" target="_blank" rel="noopener">Manual completo (PDF)</a>` : ''}</div>
+      <div class="acoes">${botao}${p.alt ? `<a class="btn sec" href="${esc(p.alt.url)}" ${p.alt.arquivo ? 'download' : 'target="_blank" rel="noopener"'}>${esc(p.alt.rotulo)}</a>` : ''}</div>
       ${p.nota ? `<p class="nota">${esc(p.nota)}</p>` : ''}
     </section>
     <nav class="secoes" aria-label="Seções da página">
@@ -454,6 +403,7 @@ function detalhe(p) {
     ${guia}
     ${p.faq ? `<h2 id="faq">Problemas comuns</h2>${p.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}` : ''}
     <h2 id="versoes">Histórico de versões</h2>
+    ${p.repo ? `<p class="github">Fonte: <a href="https://github.com/${esc(p.repo)}/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> · <a href="https://github.com/${esc(p.repo)}/commits/main" target="_blank" rel="noopener">commits no GitHub ↗</a></p>` : ''}
     ${versoes.map((v, i) => `<div class="versao"><div class="quando"><b>${rotuloVersao(v)}</b>${v.versao ? dataBR(v.data) : ''}${i ? '' : '<span class="atual">Atual</span>'}</div>
       <ul>${v.notas.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}`;
   scrollTo(0, 0);
@@ -467,462 +417,104 @@ app.addEventListener('click', e => {
 });
 zoom.addEventListener('click', () => zoom.close());
 
-// ============================================================
-// ATIVIDADES DE TI — lidas de um projeto Supabase (config.js).
-// Leitura é pública; adicionar/editar/excluir exige login em #/admin.
-// ============================================================
-const SB = window.SUPABASE || {};
-const configurado = () => !!(SB.url && SB.anonKey);
-let _sb = null;
-async function supa() {
-  if (!_sb) {
-    const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/+esm');
-    _sb = createClient(SB.url, SB.anonKey);
-  }
-  return _sb;
-}
-const hoje = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
-const segundosDe = a => a.segundos + (a.timer_inicio ? Math.max(0, Math.round((Date.now() - new Date(a.timer_inicio)) / 1000)) : 0);
-const fmtHoras = s => { const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60); return h ? `${h}h ${String(m).padStart(2, '0')}min` : s > 0 && s < 60 ? '<1min' : `${m}min`; };
-const fmtCron = s => [s / 3600, s % 3600 / 60, s % 60].map(x => String(Math.floor(x)).padStart(2, '0')).join(':');
-const mesExtenso = am => { const t = new Date(am + '-01T12:00').toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }); return t[0].toUpperCase() + t.slice(1); };
-const nomeSistema = slug => PROJETOS.find(p => p.slug === slug)?.nome;
-const avisoConfig = () => `<p class="aviso"><strong>Configuração pendente:</strong> preencha <code>config.js</code> com a URL e a chave anon do projeto Supabase. O passo a passo está no README do repositório.</p>`;
-const erroHTML = (msg, e) => `<p class="erro">${esc(msg)}${e ? ` (${esc(e.message || e)})` : ''}</p>`;
+// Diário: atividades (Firestore) + versões publicadas, agrupadas por dia.
+// Logado, o desenvolvedor publica, edita e exclui direto na página.
+const hoje = () => new Date().toLocaleDateString('sv-SE'); // AAAA-MM-DD local
+const nomeCurto = slug => PROJETOS.find(p => p.slug === slug)?.nome.split(' — ')[0] ?? '';
+// Horário opcional (inicio/fim em "HH:MM"). Minutos trabalhados; fim antes do início = virou a meia-noite.
+const minutos = a => {
+  if (!a.inicio || !a.fim) return 0;
+  const [hi, mi] = a.inicio.split(':').map(Number), [hf, mf] = a.fim.split(':').map(Number);
+  return ((hf * 60 + mf) - (hi * 60 + mi) + 1440) % 1440;
+};
+const horas = min => min ? `${Math.floor(min / 60)}h${min % 60 ? String(min % 60).padStart(2, '0') : ''}` : '';
 
-let relogio = null; // intervalo que atualiza os cronômetros em tela
-const pararRelogio = () => { clearInterval(relogio); relogio = null; };
-const ligarRelogio = fn => { pararRelogio(); relogio = setInterval(fn, 1000); };
+function atividades() {
+  document.title = 'Diário de desenvolvimento — Central de Sistemas';
+  const itens = [
+    ...ATIVS,
+    ...PROJETOS.flatMap(p => ordenadas(p).map(v => ({ data: v.data, slug: p.slug, texto: `${v.versao ? `Versão ${v.versao}: ` : 'Atualização: '}${v.notas.join(' ')}` }))),
+  ].sort(porData);
+  const dias = [...new Set(itens.map(i => i.data))];
+  const proj = slug => nomeCurto(slug) ? `<a class="proj" href="#/${esc(slug)}">${esc(nomeCurto(slug))}</a>` : '';
+  const item = i => `<li>${proj(i.slug)}${esc(i.texto)}${i.inicio && i.fim ? ` <span class="horas">${esc(i.inicio)}–${esc(i.fim)} · ${horas(minutos(i))}</span>` : ''}${USUARIO && i.id
+    ? ` <button class="chip" data-editar="${esc(i.id)}">editar</button><button class="chip" data-excluir="${esc(i.id)}">excluir</button>` : ''}</li>`;
+  const opcoes = PROJETOS.map(p => `<option value="${esc(p.slug)}">${esc(nomeCurto(p.slug))}</option>`).join('');
+  const painel = !FB ? '<p class="status">Diário indisponível no momento (sem conexão com o banco de dados).</p>'
+    : USUARIO ? `<form id="nova"><input type="hidden" name="id">
+        <label>Atividade<textarea name="texto" rows="2" maxlength="500" required placeholder="O que você fez ou está fazendo"></textarea></label>
+        <div class="linha"><input type="date" name="data" value="${hoje()}" required><select name="slug"><option value="">Geral</option>${opcoes}</select>
+          <label class="status">Início <input type="time" name="inicio"></label><label class="status">Término <input type="time" name="fim"></label>
+          <button class="btn sec">Publicar</button><button type="button" class="chip" id="cancelar" hidden>Cancelar edição</button>
+          <button type="button" class="chip" id="sair">Sair (${esc(USUARIO.email)})</button></div>
+        <p class="erro" aria-live="polite"></p></form>`
+    : `<form id="entrar"><div class="linha"><span class="status">Área do desenvolvedor</span>
+        <input type="email" name="email" required autocomplete="username" placeholder="E-mail">
+        <input type="password" name="senha" required autocomplete="current-password" placeholder="Senha">
+        <button class="btn sec">Entrar</button></div><p class="erro" aria-live="polite"></p></form>`;
+  app.innerHTML = `<a class="voltar" href="#/">← Todos os sistemas</a>
+    <h1>Diário de desenvolvimento</h1>
+    <p class="sub">O que está sendo feito nos sistemas da comarca, do mais recente para o mais antigo. Inclui as versões publicadas de cada projeto.</p>
+    <section class="publicar" aria-label="Publicar atividade">${painel}</section>
+    ${dias.map(d => { const doDia = itens.filter(i => i.data === d), total = horas(doDia.reduce((s, i) => s + minutos(i), 0));
+      return `<div class="dia"><div><time datetime="${esc(d)}">${dataBR(d)}</time>${total ? `<span class="horas">${total} trabalhadas</span>` : ''}</div><ul>${doDia.map(item).join('')}</ul></div>`; }).join('')
+      || '<p class="vazio">Nenhuma atividade registrada ainda.</p>'}`;
 
-async function listarAtividades() {
-  const sb = await supa();
-  const { data, error } = await sb.from('atividades').select('*').order('data', { ascending: false }).order('criado_em', { ascending: false });
-  if (error) throw error;
-  return data;
-}
-
-const tagSistema = a => a.sistema === 'geral' ? '<span class="tag">Geral</span>'
-  : a.sistema && nomeSistema(a.sistema) ? `<a class="tag link" href="#/${esc(a.sistema)}">${esc(nomeSistema(a.sistema))}</a>` : '';
-
-function itemAtividade(a) {
-  const s = segundosDe(a), rodando = !!a.timer_inicio, tag = tagSistema(a);
-  return `<li data-id="${esc(a.id)}">
-    <span class="quando">${dataBR(a.data)}</span><span class="titulo">${esc(a.nome)}</span>
-    <span class="horas${rodando ? ' rodando' : ''}" data-horas ${rodando ? 'title="Em andamento"' : ''}>${rodando ? '● ' : ''}${fmtHoras(s)}</span>
-    ${a.descricao ? `<p class="desc">${esc(a.descricao)}</p>` : ''}
-    ${tag ? `<span class="tags">${tag}</span>` : ''}
-  </li>`;
-}
-
-const porMes = lista => [...new Set(lista.map(a => a.data.slice(0, 7)))].map(m => [m, lista.filter(a => a.data.startsWith(m))]);
-
-function listaAgrupada(lista) {
-  if (!lista.length) return '<p class="vazio">Nenhuma atividade registrada ainda.</p>';
-  return porMes(lista).map(([m, itens]) => `<h3 class="secao">${esc(mesExtenso(m))}</h3><ul class="lista">${itens.map(itemAtividade).join('')}</ul>`).join('');
-}
-
-function atualizarCronometros(lista) {
-  for (const a of lista) {
-    if (!a.timer_inicio) continue;
-    const el = app.querySelector(`[data-id="${a.id}"] [data-horas]`);
-    if (el) el.innerHTML = '● ' + fmtHoras(segundosDe(a)) + (el.querySelector('small') ? '<small>em andamento</small>' : '');
-  }
-  const t = app.querySelector('#total');
-  if (t) t.textContent = fmtHoras(lista.reduce((s, a) => s + segundosDe(a), 0));
-}
-
-async function atividades() {
-  document.title = 'Atividades de TI — Central de Sistemas';
-  app.innerHTML = `<h1>Atividades de TI</h1>
-    <p class="sub">Registro do trabalho de manutenção, suporte e desenvolvimento dos sistemas da comarca, com o tempo dedicado a cada item.</p>
-    <div id="conteudo"><p class="vazio">Carregando…</p></div>`;
-  const alvo = app.querySelector('#conteudo');
-  if (!configurado()) { alvo.innerHTML = avisoConfig(); return; }
-  let lista;
-  try { lista = (await listarAtividades()).filter(a => a.status !== 'pendente'); } catch (e) { alvo.innerHTML = erroHTML('Não foi possível carregar as atividades.', e); return; }
-  const total = lista.reduce((s, a) => s + segundosDe(a), 0);
-  alvo.innerHTML = `<p class="resumo"><span><b>${lista.length}</b> ${lista.length === 1 ? 'atividade' : 'atividades'}</span><span><b id="total">${fmtHoras(total)}</b> trabalhadas</span></p>
-    ${listaAgrupada(lista)}
-    <p class="nota"><a href="#/admin">Área do administrador</a></p>`;
-  if (lista.some(a => a.timer_inicio)) ligarRelogio(() => atualizarCronometros(lista));
-}
-
-// ---------- infraestrutura: sessão, modais, avisos ----------
-const telaCarregando = (voltar = '#/atividades', rotulo = 'Atividades de TI') => `<a class="voltar" href="${voltar}">← ${rotulo}</a><div id="conteudo"><p class="vazio">Carregando…</p></div>`;
-
-async function exigirSessao() {
-  if (!configurado()) { app.querySelector('#conteudo').innerHTML = avisoConfig(); return null; }
-  let sb, session;
-  try { sb = await supa(); ({ data: { session } } = await sb.auth.getSession()); }
-  catch (e) { app.querySelector('#conteudo').innerHTML = erroHTML('Não foi possível conectar ao Supabase.', e); return null; }
-  if (!session) { login(sb); return null; }
-  return { sb, session };
-}
-
-function login(sb) {
-  document.title = 'Entrar — Central de Sistemas';
-  app.innerHTML = `<a class="voltar" href="#/atividades">← Atividades de TI</a><h1>Entrar</h1>
-    <p class="sub">Acesso restrito ao responsável de TI da comarca.</p>
-    <form class="form pagina" id="login" novalidate>
-      <label>E-mail<input type="email" name="email" required autocomplete="username"></label>
-      <label>Senha<input type="password" name="senha" required autocomplete="current-password"></label>
-      <p class="erro" hidden></p>
-      <div class="acoes"><button class="btn" type="submit">Entrar</button></div>
-    </form>`;
-  const f = app.querySelector('#login'), erro = f.querySelector('.erro'), botao = f.querySelector('button');
-  f.addEventListener('submit', async e => {
-    e.preventDefault(); erro.hidden = true; botao.disabled = true;
-    const { error } = await sb.auth.signInWithPassword({ email: f.email.value.trim(), password: f.senha.value });
-    botao.disabled = false;
-    if (error) { erro.textContent = 'E-mail ou senha incorretos.'; erro.hidden = false; return; }
-    rota(); // volta para a tela que pediu login (#/admin ou #/foco)
-  });
-  f.email.focus();
-}
-
-function toast(msg) {
-  let t = document.getElementById('toast');
-  if (!t) { t = document.createElement('div'); t.id = 'toast'; t.setAttribute('role', 'status'); document.body.append(t); }
-  t.textContent = msg; t.classList.add('on');
-  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 2600);
-}
-
-function abrirModal(html) {
-  const d = document.createElement('dialog');
-  d.className = 'modal'; d.innerHTML = html;
-  document.body.append(d);
-  d.addEventListener('click', e => { if (e.target === d) d.close(); }); // clique no fundo fecha
-  d.addEventListener('close', () => d.remove());
-  d.showModal();
-  return d;
-}
-
-// caixa de confirmação; resolve true só se o usuário confirmar
-function confirmar({ titulo, texto, rotulo = 'Confirmar', perigo = false }) {
-  return new Promise(res => {
-    const d = abrirModal(`<form method="dialog" class="caixa">
-      <h2>${esc(titulo)}</h2><p class="sub">${esc(texto)}</p>
-      <div class="acoes-modal"><button class="btn sec" value="nao" type="submit">Cancelar</button>
-      <button class="btn${perigo ? ' perigo-solido' : ''}" value="sim" type="submit" autofocus>${esc(rotulo)}</button></div></form>`);
-    d.addEventListener('close', () => res(d.returnValue === 'sim'));
-  });
-}
-
-// botão que precisa ser segurado por `ms` para disparar; teclado cai na confirmação em caixa
-function segurar(btn, ms, fn, confirmacao) {
-  let t = null;
-  const solta = () => { clearTimeout(t); t = null; btn.classList.remove('segurando'); };
-  btn.style.setProperty('--dur', ms + 'ms');
-  btn.addEventListener('pointerdown', e => {
-    if (e.button !== 0) return;
-    try { btn.setPointerCapture(e.pointerId); } catch {} // mantém o gesto mesmo se o dedo/mouse sair um pouco do botão
-    btn.classList.add('segurando');
-    t = setTimeout(() => { solta(); fn(); }, ms);
-  });
-  ['pointerup', 'pointercancel', 'pointerleave', 'lostpointercapture'].forEach(ev => btn.addEventListener(ev, solta));
-  btn.addEventListener('keydown', async e => {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
+  const f = app.querySelector('#nova'), erro = m => { app.querySelector('.erro').textContent = m; };
+  const limpar = () => { f.reset(); f.id.value = ''; f.data.value = hoje(); f.querySelector('#cancelar').hidden = true; };
+  app.querySelector('#entrar')?.addEventListener('submit', async e => {
     e.preventDefault();
-    if (await confirmar(confirmacao)) fn();
+    try { await FB.signInWithEmailAndPassword(FB.auth, e.target.email.value, e.target.senha.value); }
+    catch { erro('E-mail ou senha incorretos.'); }
   });
-}
-
-// formulário de atividade em modal. modo: 'pendente' (rápido) | 'lancar' (completo) | 'editar'
-// resolve true quando salvou
-function modalAtividade(sb, { modo, atividade = null, segundos = 0 }) {
-  const a = atividade || {};
-  const completo = modo !== 'pendente';
-  const s = atividade ? segundosDe(atividade) : segundos;
-  const opcoes = `<option value="">— nenhum —</option><option value="geral">Geral (sem sistema específico)</option>${PROJETOS.map(p => `<option value="${esc(p.slug)}">${esc(p.nome)}</option>`).join('')}`;
-  const titulos = { pendente: 'Nova pendência', lancar: 'Lançar atividade', editar: 'Editar atividade' };
-  const subs = { pendente: 'Anote o que falta fazer. Só você vê as pendências.', lancar: 'Registre uma atividade já concluída, com o tempo que levou.', editar: '' };
-  const sistema = `<label>Sistema relacionado<select name="sistema">${opcoes}</select></label>`;
-  const html = `<form class="caixa form" novalidate>
-    <h2>${titulos[modo]}</h2>${subs[modo] ? `<p class="sub">${subs[modo]}</p>` : ''}
-    <label>Nome<input name="nome" required maxlength="120" value="${esc(a.nome || '')}" placeholder="${modo === 'pendente' ? 'Ex.: Atualizar o Fórum Hub' : 'Ex.: Atualização do Fórum Hub'}"></label>
-    ${completo ? `<div class="linha"><label>Data<input type="date" name="data" value="${esc(a.data || hoje())}" required></label>${sistema}</div>` : sistema}
-    <label>Descrição<textarea name="descricao" placeholder="${modo === 'pendente' ? 'Detalhes, para quem, prazo…' : 'O que foi feito, para quem, resultado…'}">${esc(a.descricao || '')}</textarea></label>
-    ${completo ? `<div class="campo"><span>Tempo trabalhado</span><span class="tempo">
-        <input type="number" name="h" min="0" step="1" value="${Math.floor(s / 3600)}" aria-label="Horas"> h
-        <input type="number" name="m" min="0" max="59" step="1" value="${Math.floor(s % 3600 / 60)}" aria-label="Minutos"> min</span></div>` : ''}
-    ${modo === 'editar' ? `<label>Situação<select name="status"><option value="concluida">Concluída (aparece na página pública)</option><option value="pendente">Pendente (só o administrador vê)</option></select></label>` : ''}
-    <p class="erro" hidden></p>
-    <div class="acoes-modal"><button type="button" class="btn sec" data-fechar>Cancelar</button><button class="btn" type="submit">${modo === 'pendente' ? 'Adicionar' : 'Salvar'}</button></div>
-  </form>`;
-  return new Promise(res => {
-    const d = abrirModal(html), f = d.querySelector('form'), erro = f.querySelector('.erro');
-    let salvo = false;
-    f.sistema.value = a.sistema || '';
-    if (f.status) f.status.value = a.status === 'pendente' ? 'pendente' : 'concluida';
-    d.querySelector('[data-fechar]').addEventListener('click', () => d.close());
-    d.addEventListener('close', () => res(salvo));
-    f.addEventListener('submit', async e => {
-      e.preventDefault(); erro.hidden = true;
-      const nome = f.nome.value.trim();
-      if (!nome || (completo && !f.data.value)) { erro.textContent = completo ? 'Informe o nome e a data.' : 'Informe o nome da pendência.'; erro.hidden = false; return; }
-      const dados = { nome, descricao: f.descricao.value.trim() || null, sistema: f.sistema.value || null };
-      if (completo) {
-        dados.data = f.data.value;
-        dados.segundos = (Number(f.h.value) || 0) * 3600 + (Number(f.m.value) || 0) * 60;
-        dados.status = f.status ? f.status.value : 'concluida';
-        if (atividade?.timer_inicio) dados.timer_inicio = new Date().toISOString(); // tempo digitado já inclui o decorrido
-      } else { dados.status = 'pendente'; dados.data = hoje(); }
-      f.querySelector('[type=submit]').disabled = true;
-      const { error } = atividade ? await sb.from('atividades').update(dados).eq('id', atividade.id) : await sb.from('atividades').insert(dados);
-      f.querySelector('[type=submit]').disabled = false;
-      if (error) { erro.textContent = `Não foi possível salvar (${error.message}).`; erro.hidden = false; return; }
-      salvo = true; d.close();
-    });
-    f.nome.focus();
-  });
-}
-
-// pausa qualquer cronômetro de atividade que esteja rodando no banco
-async function pausarTodos(sb, excetoId = null) {
-  const { data, error } = await sb.from('atividades').select('*').not('timer_inicio', 'is', null);
-  if (error) throw error;
-  for (const a of data.filter(a => a.id !== excetoId)) {
-    const { error: e2 } = await sb.from('atividades').update({ segundos: segundosDe(a), timer_inicio: null }).eq('id', a.id);
-    if (e2) throw e2;
-  }
-}
-
-async function concluirAtividade(sb, a) {
-  const dados = { status: 'concluida', data: hoje() };
-  if (a.timer_inicio) { dados.segundos = segundosDe(a); dados.timer_inicio = null; }
-  const { error } = await sb.from('atividades').update(dados).eq('id', a.id);
-  if (error) throw error;
-}
-
-// ---------- administração ----------
-function cartao(a) {
-  const pend = a.status === 'pendente', s = segundosDe(a), rodando = !!a.timer_inicio;
-  return `<article class="cartao${pend ? ' pendente' : ''}${rodando ? ' rodando' : ''}" data-id="${esc(a.id)}">
-    <header>
-      <div><h3>${esc(a.nome)}</h3>
-        <div class="tags">${tagSistema(a)}<span class="tag${pend ? ' prazo' : ''}">${pend ? 'anotada em ' : ''}${dataBR(a.data)}</span></div></div>
-      <span class="tempo${rodando ? ' ativo' : ''}" data-horas>${rodando ? '● ' : ''}${fmtHoras(s)}<small>${rodando ? 'em andamento' : pend ? 'já dedicado' : 'trabalhadas'}</small></span>
-    </header>
-    ${a.descricao ? `<p class="desc">${esc(a.descricao)}</p>` : ''}
-    <footer>
-      ${pend ? '<button class="btn mini" data-acao="concluir">✓ Concluir</button>' : ''}
-      <a class="btn mini${pend ? ' sec' : ''}" href="#/foco/${esc(a.id)}">${rodando ? '◉ Ver no foco' : '▶ Focar'}</a>
-      <span class="sep"></span>
-      <button class="btn mini sec" data-acao="editar">Editar</button>
-      <button class="btn mini sec perigo" data-acao="excluir">Excluir</button>
-    </footer>
-  </article>`;
-}
-
-async function admin() {
-  document.title = 'Administração — Central de Sistemas';
-  app.innerHTML = telaCarregando();
-  const sessao = await exigirSessao();
-  if (!sessao) return;
-  const { sb, session } = sessao;
-  let aba = 'pendentes';
-  try { aba = localStorage.getItem('central-aba') || 'pendentes'; } catch {}
-
-  app.innerHTML = `<div id="adm">
-    <div class="sessao"><span>Conectado como <b>${esc(session.user.email)}</b></span>
-      <span class="ops"><a class="btn mini" href="#/foco">◉ Modo foco</a><button class="btn mini sec" id="sair">Sair</button></span></div>
-    <h1>Atividades de TI</h1>
-    <div class="abas" role="tablist">
-      <button role="tab" data-aba="pendentes" aria-selected="false">Pendentes<span class="n" id="n-pend">…</span></button>
-      <button role="tab" data-aba="registradas" aria-selected="false">Registradas<span class="n" id="n-reg">…</span></button>
-    </div>
-    <section id="painel-pendentes" role="tabpanel" hidden>
-      <div class="barra"><p class="sub">O que ainda falta fazer. Só você vê esta lista.</p><button class="btn mini" data-novo="pendente">＋ Nova pendência</button></div>
-      <div id="lista-pendentes"></div>
-    </section>
-    <section id="painel-registradas" role="tabpanel" hidden>
-      <div class="barra"><p class="sub">Atividades concluídas, visíveis na página pública.</p><button class="btn mini" data-novo="lancar">＋ Lançar atividade manual</button></div>
-      <div id="lista-registradas"></div>
-    </section>
-  </div>`;
-
-  const raiz = app.querySelector('#adm'), listaPend = raiz.querySelector('#lista-pendentes'), listaReg = raiz.querySelector('#lista-registradas');
-  let itens = [];
-
-  const mostrarAba = nome => {
-    aba = nome;
-    try { localStorage.setItem('central-aba', nome); } catch {}
-    raiz.querySelectorAll('[role=tab]').forEach(b => b.setAttribute('aria-selected', b.dataset.aba === nome));
-    raiz.querySelectorAll('[role=tabpanel]').forEach(p => { p.hidden = p.id !== 'painel-' + nome; });
-  };
-
-  const carregar = async () => {
-    try { itens = await listarAtividades(); }
-    catch (e) { listaPend.innerHTML = listaReg.innerHTML = erroHTML('Não foi possível carregar as atividades.', e); return; }
-    const pend = itens.filter(a => a.status === 'pendente').sort((a, b) => a.data.localeCompare(b.data) || a.criado_em.localeCompare(b.criado_em));
-    const reg = itens.filter(a => a.status !== 'pendente');
-    raiz.querySelector('#n-pend').textContent = pend.length; raiz.querySelector('#n-reg').textContent = reg.length;
-    listaPend.innerHTML = pend.length ? `<div class="cartoes">${pend.map(cartao).join('')}</div>`
-      : '<p class="vazio-caixa">Nenhuma pendência. Use "Nova pendência" para anotar o que falta fazer.</p>';
-    listaReg.innerHTML = reg.length ? porMes(reg).map(([m, l]) => `<h3 class="secao">${esc(mesExtenso(m))}</h3><div class="cartoes">${l.map(cartao).join('')}</div>`).join('')
-      : '<p class="vazio-caixa">Nenhuma atividade registrada. Conclua uma pendência ou lance uma atividade manual.</p>';
-  };
-
-  raiz.addEventListener('click', async e => {
-    const tab = e.target.closest('[role=tab]');
-    if (tab) return mostrarAba(tab.dataset.aba);
-    const novo = e.target.closest('[data-novo]');
-    if (novo) {
-      if (await modalAtividade(sb, { modo: novo.dataset.novo })) { toast(novo.dataset.novo === 'pendente' ? 'Pendência adicionada.' : 'Atividade registrada.'); carregar(); }
-      return;
-    }
-    const b = e.target.closest('[data-acao]');
-    if (!b) return;
-    const a = itens.find(x => x.id === b.closest('[data-id]').dataset.id);
-    if (!a) return;
-    try {
-      if (b.dataset.acao === 'concluir') { await concluirAtividade(sb, a); toast(`"${a.nome}" concluída e registrada hoje.`); }
-      else if (b.dataset.acao === 'editar') { if (!await modalAtividade(sb, { modo: 'editar', atividade: a })) return; toast('Atividade atualizada.'); }
-      else if (b.dataset.acao === 'excluir') {
-        if (!await confirmar({ titulo: 'Excluir atividade?', texto: `"${a.nome}" será apagada definitivamente.`, rotulo: 'Excluir', perigo: true })) return;
-        const { error } = await sb.from('atividades').delete().eq('id', a.id);
-        if (error) throw error;
-        toast('Atividade excluída.');
-      }
-    } catch (err) { toast(`A operação falhou: ${err.message || err}`); }
-    carregar();
-  });
-
-  raiz.querySelector('#sair').addEventListener('click', async () => { pararRelogio(); await sb.auth.signOut(); location.hash = '#/atividades'; });
-
-  mostrarAba(aba); ligarRelogio(() => atualizarCronometros(itens)); carregar();
-}
-
-// ---------- modo foco ----------
-const CR_CHAVE = 'central-cronometro';
-const crLer = () => { try { const s = JSON.parse(localStorage.getItem(CR_CHAVE)); if (s && s.estado) return s; } catch {} return { estado: 'parado', acumulado: 0, inicio: null }; };
-const crGravar = cr => { try { localStorage.setItem(CR_CHAVE, JSON.stringify(cr)); } catch {} };
-
-async function foco(id) {
-  document.title = 'Modo foco — Central de Sistemas';
-  app.innerHTML = telaCarregando('#/admin', 'Administração');
-  const sessao = await exigirSessao();
-  if (!sessao) return;
-  const { sb } = sessao;
-
-  // atividade vinculada (opcional): o tempo vai direto para ela, no banco
-  let a = null;
-  if (id) {
-    const { data, error } = await sb.from('atividades').select('*').eq('id', id).maybeSingle();
-    if (error || !data) { app.querySelector('#conteudo').innerHTML = '<p class="vazio-caixa">Atividade não encontrada. <a href="#/foco">Abrir o cronômetro livre</a></p>'; return; }
-    a = data;
-  }
-  let cr = a ? null : crLer(); // cronômetro livre fica neste navegador
-
-  app.innerHTML = `<div class="foco">
-    <a class="voltar" href="#/admin">← Administração</a>
-    <div class="foco-centro">
-      <p class="foco-tarefa">${a ? `${a.status === 'pendente' ? 'Pendência' : 'Atividade'}<strong>${esc(a.nome)}</strong><span class="tags">${tagSistema(a)}</span>`
-        : 'Cronômetro livre<span class="dica" style="text-transform:none;letter-spacing:0">Ao finalizar, você registra a atividade com o tempo medido.</span>'}</p>
-      <div class="relogio" id="relogio" aria-live="off">00:00:00</div>
-      <p class="foco-estado" id="estado"></p>
-      <div class="foco-acoes" id="acoes"></div>
-      <p class="foco-dica" id="dica"></p>
-    </div></div>`;
-  const relogio = app.querySelector('#relogio'), estadoEl = app.querySelector('#estado'), acoes = app.querySelector('#acoes'), dica = app.querySelector('#dica');
-  let ocupado = false;
-
-  const segundos = () => a ? segundosDe(a) : cr.acumulado + (cr.inicio ? Math.max(0, Math.round((Date.now() - cr.inicio) / 1000)) : 0);
-  const estado = () => a ? (a.timer_inicio ? 'rodando' : 'parado') : cr.estado;
-  const rotulos = { parado: 'Parado', rodando: 'Contando', pausado: 'Pausado', finalizado: 'Finalizado' };
-
-  const pintarTempo = () => {
-    const s = segundos(), e = estado();
-    relogio.textContent = fmtCron(s);
-    relogio.className = 'relogio ' + (e === 'rodando' ? 'rodando' : e === 'pausado' || e === 'finalizado' ? 'pausado' : '');
-    document.title = (e === 'rodando' ? fmtCron(s) + ' · ' : '') + 'Modo foco — Central de Sistemas';
-  };
-
-  const pintar = () => {
-    pintarTempo();
-    const e = estado(), s = segundos();
-    estadoEl.innerHTML = `<span class="ponto ${e}"></span>${rotulos[e]}${a && e === 'parado' && s ? ' · tempo acumulado da atividade' : ''}`;
-    let botoes, texto;
-    if (a) {
-      botoes = e === 'rodando'
-        ? [['pausar', '❚❚ Pausar', 'sec'], ['finalizar', '■ Finalizar', '']]
-        : [['iniciar', s ? '▶ Retomar' : '▶ Iniciar', ''], ...(a.status === 'pendente' ? [['concluir', '✓ Concluir', 'sec']] : [])];
-      texto = e === 'rodando' ? 'O tempo é gravado na atividade e continua contando mesmo se você fechar esta aba.'
-        : a.status === 'pendente' ? 'Finalizar pausa o tempo e pergunta se a pendência foi concluída.' : 'Iniciar soma o tempo desta sessão ao total da atividade.';
-    } else {
-      botoes = { parado: [['iniciar', '▶ Iniciar', '']],
-        rodando: [['pausar', '❚❚ Pausar', 'sec'], ['finalizar', '■ Finalizar', '']],
-        pausado: [['retomar', '▶ Retomar', ''], ['finalizar', '■ Finalizar', 'sec'], ['descartar', 'Descartar', 'mini sec perigo segurar']],
-        finalizado: [['registrar', 'Registrar atividade', ''], ['retomar', '▶ Retomar', 'sec'], ['descartar', 'Descartar', 'mini sec perigo segurar']] }[e];
-      texto = { parado: 'Pressione <kbd>Espaço</kbd> para iniciar ou pausar.', rodando: 'O cronômetro continua contando se você recarregar a página.',
-        pausado: 'Retome quando voltar à tarefa. Segure "Descartar" por 2 segundos para zerar.',
-        finalizado: `Registre a atividade com ${fmtHoras(Math.max(60, s))} ou retome a contagem.` }[e];
-    }
-    acoes.innerHTML = botoes.map(([acao, rotulo, cls]) => `<button class="btn ${cls.includes('mini') ? cls : 'grande ' + cls}" data-acao="${acao}" ${cls.includes('segurar') ? 'title="Segure por 2 segundos"' : ''}>${rotulo}</button>`).join('');
-    dica.innerHTML = texto;
-    const seg = acoes.querySelector('.segurar');
-    if (seg) segurar(seg, 2000, () => executar('descartar!'), { titulo: 'Zerar o cronômetro?', texto: `Você vai perder ${fmtHoras(Math.max(60, s))} medidos.`, rotulo: 'Zerar', perigo: true });
-  };
-
-  const recarregarAtividade = async () => {
-    const { data } = await sb.from('atividades').select('*').eq('id', a.id).maybeSingle();
-    if (data) a = data;
-  };
-
-  const executar = async acao => {
-    if (ocupado) return;
-    ocupado = true;
-    try {
-      if (a) { // vinculado: tudo no banco
-        if (acao === 'iniciar') { await pausarTodos(sb, a.id); const { error } = await sb.from('atividades').update({ timer_inicio: new Date().toISOString() }).eq('id', a.id); if (error) throw error; }
-        else if (acao === 'pausar') { const { error } = await sb.from('atividades').update({ segundos: segundosDe(a), timer_inicio: null }).eq('id', a.id); if (error) throw error; }
-        else if (acao === 'finalizar' || acao === 'concluir') {
-          if (a.timer_inicio) { const { error } = await sb.from('atividades').update({ segundos: segundosDe(a), timer_inicio: null }).eq('id', a.id); if (error) throw error; await recarregarAtividade(); }
-          if (a.status === 'pendente' && await confirmar({ titulo: 'Concluir a pendência?', texto: `"${a.nome}" vai para as registradas com a data de hoje, com ${fmtHoras(segundosDe(a))} de trabalho.`, rotulo: 'Concluir' })) {
-            await concluirAtividade(sb, a); toast('Pendência concluída.'); location.hash = '#/admin'; return;
-          }
-          if (acao === 'finalizar') { toast('Tempo salvo na atividade.'); location.hash = '#/admin'; return; }
-        }
-        await recarregarAtividade();
-      } else { // livre: estado local
-        if (acao === 'iniciar' || acao === 'retomar') { cr.inicio = Date.now(); cr.estado = 'rodando'; }
-        else if (acao === 'pausar') { cr.acumulado = segundos(); cr.inicio = null; cr.estado = 'pausado'; }
-        else if (acao === 'finalizar') { cr.acumulado = segundos(); cr.inicio = null; cr.estado = 'finalizado'; }
-        else if (acao === 'descartar!') { cr = { estado: 'parado', acumulado: 0, inicio: null }; toast('Cronômetro zerado.'); }
-        else if (acao === 'registrar') {
-          if (await modalAtividade(sb, { modo: 'lancar', segundos: Math.max(60, Math.round(cr.acumulado / 60) * 60) })) { cr = { estado: 'parado', acumulado: 0, inicio: null }; toast('Atividade registrada.'); }
-        }
-        crGravar(cr);
-      }
-    } catch (err) { toast(`A operação falhou: ${err.message || err}`); }
-    ocupado = false; pintar();
-  };
-
-  acoes.addEventListener('click', e => { const b = e.target.closest('[data-acao]'); if (b && !b.classList.contains('segurar')) executar(b.dataset.acao); });
-  const tecla = e => {
-    if (e.key !== ' ' || (e.target instanceof Element && e.target.closest('input, textarea, select, button, a, dialog'))) return;
+  app.querySelector('#sair')?.addEventListener('click', () => FB.signOut(FB.auth));
+  app.querySelector('#cancelar')?.addEventListener('click', limpar);
+  f?.addEventListener('submit', async e => {
     e.preventDefault();
-    const s = estado();
-    executar(s === 'rodando' ? 'pausar' : s === 'parado' ? 'iniciar' : 'retomar');
-  };
-  document.addEventListener('keydown', tecla);
-  aoSair.push(() => { document.removeEventListener('keydown', tecla); document.title = 'Central de Sistemas — Comarca de Rio Real'; });
-
-  pintar(); ligarRelogio(pintarTempo);
+    const dados = { data: f.data.value, texto: f.texto.value.trim(), slug: f.slug.value, inicio: f.inicio.value, fim: f.fim.value };
+    if ((dados.inicio && !dados.fim) || (!dados.inicio && dados.fim)) return erro('Informe início e término, ou deixe os dois em branco.');
+    try {
+      if (f.id.value) await FB.updateDoc(FB.doc(FB.db, 'atividades', f.id.value), dados);
+      else await FB.addDoc(FB.col, { ...dados, criadoEm: FB.serverTimestamp() });
+      limpar(); atividades();
+    } catch (x) { erro('Não foi possível salvar. Verifique as regras do Firestore. ' + x.message); }
+  });
+  app.querySelectorAll('[data-editar]').forEach(b => b.addEventListener('click', () => {
+    const a = ATIVS.find(a => a.id === b.dataset.editar);
+    f.id.value = a.id; f.texto.value = a.texto; f.data.value = a.data; f.slug.value = a.slug || ''; f.inicio.value = a.inicio || ''; f.fim.value = a.fim || '';
+    f.querySelector('#cancelar').hidden = false; f.scrollIntoView(); f.texto.focus();
+  }));
+  app.querySelectorAll('[data-excluir]').forEach(b => b.addEventListener('click', async () => {
+    if (confirm('Excluir esta atividade?')) await FB.deleteDoc(FB.doc(FB.db, 'atividades', b.dataset.excluir)).catch(x => erro(x.message));
+  }));
 }
 
-const aoSair = []; // limpezas executadas ao trocar de rota
 function rota() {
-  pararRelogio();
-  aoSair.splice(0).forEach(fn => fn());
   const h = location.hash.slice(2);
-  if (h === 'atividades') return atividades();
-  if (h === 'admin') return admin();
-  if (h === 'foco' || h.startsWith('foco/')) return foco(h.slice(5) || null);
   const p = PROJETOS.find(p => p.slug === h);
-  p ? detalhe(p) : catalogo();
+  p ? detalhe(p) : h === 'atividades' ? atividades() : catalogo();
 }
 addEventListener('hashchange', rota);
+
+// Firebase via CDN. Sem rede, FB fica null e só o diário fica indisponível.
+async function iniciarFirebase() {
+  const url = m => `https://www.gstatic.com/firebasejs/11.0.1/firebase-${m}.js`;
+  const [appM, authM, fsM] = await Promise.all([import(url('app')), import(url('auth')), import(url('firestore'))]);
+  const a = appM.initializeApp(FIREBASE), db = fsM.getFirestore(a);
+  FB = { ...authM, ...fsM, auth: authM.getAuth(a), db, col: fsM.collection(db, 'atividades') };
+  const noDiario = () => location.hash.slice(2) === 'atividades';
+  FB.onAuthStateChanged(FB.auth, u => { USUARIO = u; if (noDiario()) atividades(); });
+  FB.onSnapshot(FB.query(FB.col, FB.orderBy('data', 'desc'), FB.limit(300)), s => {
+    ATIVS = s.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (noDiario() && !app.querySelector('#nova')?.texto.value) atividades(); // não apaga o que está sendo digitado
+  }, e => console.warn('Firestore:', e.message));
+}
+
+// Carrega changelogs e Firebase antes da primeira renderização; falhas não travam a página.
+await Promise.allSettled([
+  iniciarFirebase().catch(e => console.warn('Firebase indisponível:', e.message)),
+  ...PROJETOS.filter(p => p.repo).map(p => lerMd(`changelog/${p.slug}.md`).then(v => { LOGS[p.slug] = v; })),
+]);
 rota();
 </script>
 </body>

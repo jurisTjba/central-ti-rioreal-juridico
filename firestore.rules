@@ -1,0 +1,19 @@
+rules_version = '2';
+
+// Diário da Central de Sistemas.
+// Acrescente o bloco "match /atividades" às regras já publicadas do projeto Firebase
+// (console.firebase.google.com → Firestore → Regras) e troque SEU-EMAIL-AQUI pelo
+// e-mail da sua conta. Todos leem; só essa conta grava.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /atividades/{id} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && request.auth.token.email == 'SEU-EMAIL-AQUI'
+        && (request.method == 'delete' || (
+             request.resource.data.texto is string && request.resource.data.texto.size() <= 500
+          && request.resource.data.data is string && request.resource.data.data.matches('\d{4}-\d{2}-\d{2}')
+          && request.resource.data.get('inicio', '') is string && request.resource.data.get('fim', '') is string));
+    }
+  }
+}
